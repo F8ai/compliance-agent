@@ -1,0 +1,12 @@
+{
+  "agent": "compliance-agent",
+  "description": "Baseline tests for Cannabis regulatory compliance and legal guidance",
+  "questions": [
+    {
+      "id": "q001",
+      "question": "What are the key requirements for cannabis regulatory compliance?",
+      "expected_answer": "Key requirements include...",
+      "max_score": 10
+    }
+  ]
+}
