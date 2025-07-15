@@ -9,7 +9,7 @@ import os
 import sys
 import logging
 from datetime import datetime
-from download_regulations import RegulationDownloader
+from download_regulations import RegulationMirror
 
 # Configure logging
 logging.basicConfig(
@@ -42,9 +42,9 @@ def daily_update():
     """Perform daily regulation update"""
     logger.info("Starting daily regulation update...")
     
-    # Download latest regulations
-    downloader = RegulationDownloader()
-    download_results = downloader.download_all_regulations()
+    # Mirror latest regulatory websites
+    mirror = RegulationMirror()
+    download_results = mirror.mirror_all_websites()
     
     # Update knowledge base
     kb_success = update_knowledge_base()

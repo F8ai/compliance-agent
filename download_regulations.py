@@ -1,8 +1,8 @@
 
 #!/usr/bin/env python3
 """
-Cannabis Regulation Download Script
-Downloads regulations from all cannabis-legal states and organizes by state
+Cannabis Regulation Website Mirror Script
+Downloads complete regulatory websites from all cannabis-legal states
 """
 
 import os
@@ -16,240 +16,275 @@ from typing import Dict, List
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class RegulationDownloader:
+class RegulationMirror:
     def __init__(self, base_dir: str = "regulations"):
         self.base_dir = base_dir
-        self.state_urls = self._get_state_regulation_urls()
+        self.state_sites = self._get_state_regulatory_sites()
         
-    def _get_state_regulation_urls(self) -> Dict[str, Dict[str, str]]:
-        """Define URLs for each state's cannabis regulations"""
+    def _get_state_regulatory_sites(self) -> Dict[str, Dict[str, str]]:
+        """Define main regulatory websites for each state"""
         return {
             "CO": {
                 "name": "Colorado",
                 "agency": "Marijuana Enforcement Division",
-                "urls": [
-                    "https://sbg.colorado.gov/sites/sbg/files/documents/1%20CCR%20212-3.pdf",
-                    "https://leg.colorado.gov/sites/default/files/documents/2021A/bills/2021a_1090_signed.pdf"
+                "main_url": "https://sbg.colorado.gov/med-enforcement",
+                "mirror_domains": [
+                    "sbg.colorado.gov/med-enforcement",
+                    "leg.colorado.gov/bills/cannabis"
                 ]
             },
             "CA": {
                 "name": "California", 
                 "agency": "Department of Cannabis Control",
-                "urls": [
-                    "https://cannabis.ca.gov/wp-content/uploads/sites/2/2021/12/DCC_CommercialCannabisRegulations_2022.pdf",
-                    "https://cannabis.ca.gov/wp-content/uploads/sites/2/2022/01/Medicinal_Cannabis_Regulations.pdf"
+                "main_url": "https://cannabis.ca.gov",
+                "mirror_domains": [
+                    "cannabis.ca.gov"
                 ]
             },
             "WA": {
                 "name": "Washington",
                 "agency": "Liquor and Cannabis Board", 
-                "urls": [
-                    "https://lcb.wa.gov/sites/default/files/publications/rules/WAC-314-55.pdf",
-                    "https://lcb.wa.gov/sites/default/files/publications/Marijuana/bulletins/FAQ-TRACEABILITY.pdf"
+                "main_url": "https://lcb.wa.gov/cannabis",
+                "mirror_domains": [
+                    "lcb.wa.gov/cannabis"
                 ]
             },
             "OR": {
                 "name": "Oregon",
                 "agency": "Liquor and Cannabis Commission",
-                "urls": [
-                    "https://www.oregon.gov/olcc/marijuana/Documents/CTS/CTS_ManualCoverAndContents.pdf",
-                    "https://www.oregon.gov/olcc/marijuana/Documents/Bulletins/2023/MB2023-05.pdf"
+                "main_url": "https://www.oregon.gov/olcc/marijuana",
+                "mirror_domains": [
+                    "oregon.gov/olcc/marijuana"
                 ]
             },
             "AK": {
                 "name": "Alaska",
                 "agency": "Marijuana Control Board",
-                "urls": [
-                    "https://www.commerce.alaska.gov/web/Portals/9/pub/MCB/StatutesAndRegulations/3AAC306_MarijuanaControlBoard.pdf"
+                "main_url": "https://www.commerce.alaska.gov/web/amco",
+                "mirror_domains": [
+                    "commerce.alaska.gov/web/amco"
                 ]
             },
             "AZ": {
                 "name": "Arizona", 
                 "agency": "Department of Health Services",
-                "urls": [
-                    "https://azdhs.gov/documents/licensing/medical-marijuana/rules/adult-use-marijuana-rules.pdf"
+                "main_url": "https://azdhs.gov/licensing/medical-marijuana",
+                "mirror_domains": [
+                    "azdhs.gov/licensing/medical-marijuana"
                 ]
             },
             "CT": {
                 "name": "Connecticut",
                 "agency": "Department of Consumer Protection", 
-                "urls": [
-                    "https://portal.ct.gov/-/media/DCP/regulations/title_21/21-430-1_thru_21-430-81.pdf"
+                "main_url": "https://portal.ct.gov/DCP/Drug-Control-Division/Drug-Control-Division",
+                "mirror_domains": [
+                    "portal.ct.gov/DCP/Drug-Control-Division"
                 ]
             },
             "DE": {
                 "name": "Delaware",
                 "agency": "Division of Alcohol and Tobacco Enforcement",
-                "urls": [
-                    "https://regs.delaware.gov/register/april2022/proposed/25%20DE%20Reg%201012%2004-01-22.pdf"
+                "main_url": "https://regs.delaware.gov",
+                "mirror_domains": [
+                    "regs.delaware.gov"
                 ]
             },
             "IL": {
                 "name": "Illinois",
                 "agency": "Cannabis Control Board",
-                "urls": [
-                    "https://www2.illinois.gov/sites/agr/Plants/Documents/Hemp%20Program/Final%20Hemp%20Rules.pdf"
+                "main_url": "https://www2.illinois.gov/sites/agr/Plants/Pages/Hemp.aspx",
+                "mirror_domains": [
+                    "illinois.gov/sites/agr/Plants"
                 ]
             },
             "ME": {
                 "name": "Maine",
                 "agency": "Office of Cannabis Policy",
-                "urls": [
-                    "https://www.maine.gov/dafs/ocp/sites/maine.gov.dafs.ocp/files/inline-files/Ch1AdultUseCannabisEstablishments.pdf"
+                "main_url": "https://www.maine.gov/dafs/ocp",
+                "mirror_domains": [
+                    "maine.gov/dafs/ocp"
                 ]
             },
             "MD": {
                 "name": "Maryland",
                 "agency": "Cannabis Control Authority",
-                "urls": [
-                    "https://mmcc.maryland.gov/Documents/Patient%20and%20Caregiver%20Registry/FINAL%20COMAR%2010.62.30%20-%20Patient%20and%20Caregiver%20Registry%20Program.pdf"
+                "main_url": "https://mmcc.maryland.gov",
+                "mirror_domains": [
+                    "mmcc.maryland.gov"
                 ]
             },
             "MA": {
                 "name": "Massachusetts",
                 "agency": "Cannabis Control Commission",
-                "urls": [
-                    "https://mass-cannabis-control.com/wp-content/uploads/2022/12/935_CMR_500.000_Adult_Use_of_Marijuana.pdf"
+                "main_url": "https://mass-cannabis-control.com",
+                "mirror_domains": [
+                    "mass-cannabis-control.com"
                 ]
             },
             "MI": {
                 "name": "Michigan",
                 "agency": "Cannabis Regulatory Agency", 
-                "urls": [
-                    "https://www.michigan.gov/cra/-/media/Project/Websites/cra/documents/adult-use/R-420-1-R-420-75-Adult-Use-Marihuana-Rules.pdf"
+                "main_url": "https://www.michigan.gov/cra",
+                "mirror_domains": [
+                    "michigan.gov/cra"
                 ]
             },
             "MO": {
                 "name": "Missouri",
                 "agency": "Division of Cannabis Regulation",
-                "urls": [
-                    "https://health.mo.gov/safety/medical-marijuana/pdf/19CSR30-95.pdf"
+                "main_url": "https://health.mo.gov/safety/medical-marijuana",
+                "mirror_domains": [
+                    "health.mo.gov/safety/medical-marijuana"
                 ]
             },
             "MT": {
                 "name": "Montana",
                 "agency": "Cannabis Control Division",
-                "urls": [
-                    "https://mtrevenue.gov/wp-content/uploads/2022/01/Cannabis-Control-Division-Rules-42.39.101-42.39.501.pdf"
+                "main_url": "https://mtrevenue.gov/cannabis",
+                "mirror_domains": [
+                    "mtrevenue.gov/cannabis"
                 ]
             },
             "NV": {
                 "name": "Nevada", 
                 "agency": "Cannabis Compliance Board",
-                "urls": [
-                    "https://ccb.nv.gov/wp-content/uploads/2021/07/NAC-453D-Adult-Use-Cannabis.pdf"
+                "main_url": "https://ccb.nv.gov",
+                "mirror_domains": [
+                    "ccb.nv.gov"
                 ]
             },
             "NJ": {
                 "name": "New Jersey",
                 "agency": "Cannabis Regulatory Commission",
-                "urls": [
-                    "https://www.nj.gov/cannabis/documents/rules/personal-use-cannabis-rules.pdf"
+                "main_url": "https://www.nj.gov/cannabis",
+                "mirror_domains": [
+                    "nj.gov/cannabis"
                 ]
             },
             "NM": {
                 "name": "New Mexico",
                 "agency": "Regulation and Licensing Department",
-                "urls": [
-                    "https://www.rld.nm.gov/uploads/files/16.8.2%20NMAC%20Cannabis%20Control%20Act%20Rules.pdf"
+                "main_url": "https://www.rld.nm.gov/cannabis-control-division",
+                "mirror_domains": [
+                    "rld.nm.gov/cannabis-control-division"
                 ]
             },
             "NY": {
                 "name": "New York", 
                 "agency": "Office of Cannabis Management",
-                "urls": [
-                    "https://cannabis.ny.gov/system/files/documents/2022/10/part-116-adult-use-cannabis-regulations.pdf"
+                "main_url": "https://cannabis.ny.gov",
+                "mirror_domains": [
+                    "cannabis.ny.gov"
                 ]
             },
             "RI": {
                 "name": "Rhode Island",
                 "agency": "Department of Business Regulation",
-                "urls": [
-                    "https://dbr.ri.gov/documents/regulations/DBR-Cannabis-Regulations.pdf"
+                "main_url": "https://dbr.ri.gov/divisions/commercial-licensing/cannabis",
+                "mirror_domains": [
+                    "dbr.ri.gov/divisions/commercial-licensing/cannabis"
                 ]
             },
             "VT": {
                 "name": "Vermont",
                 "agency": "Cannabis Control Board", 
-                "urls": [
-                    "https://ccb.vermont.gov/sites/ccb/files/documents/Rules/CCB%20Rule%201%20-%20Licensing%20-%20ADOPTED%202023-01-11.pdf"
+                "main_url": "https://ccb.vermont.gov",
+                "mirror_domains": [
+                    "ccb.vermont.gov"
                 ]
             },
             "VA": {
                 "name": "Virginia",
                 "agency": "Cannabis Control Authority",
-                "urls": [
-                    "https://www.vacannabiscontrolauthority.com/sites/default/files/2022-12/1VAC5-10%20Cannabis%20Control%20Authority%20Regulations.pdf"
+                "main_url": "https://www.vacannabiscontrolauthority.com",
+                "mirror_domains": [
+                    "vacannabiscontrolauthority.com"
                 ]
             },
             "FL": {
                 "name": "Florida (Medical Only)",
                 "agency": "Department of Health",
-                "urls": [
-                    "https://www.flrules.org/gateway/ruleNo.asp?id=64-4.001"
+                "main_url": "https://knowthefactsmmj.com",
+                "mirror_domains": [
+                    "knowthefactsmmj.com",
+                    "flrules.org/gateway/department.asp?id=64"
                 ]
             },
             "OH": {
                 "name": "Ohio (Medical Only)",
                 "agency": "Department of Commerce",
-                "urls": [
-                    "https://www.com.ohio.gov/documents/dico_MedicalMarijuanaControlProgramRules.pdf"
+                "main_url": "https://www.com.ohio.gov/divisions/division-of-industrial-compliance-and-labor/bureaus/bureau-of-workers-compensation/medical-marijuana-control-program",
+                "mirror_domains": [
+                    "com.ohio.gov/divisions/division-of-industrial-compliance-and-labor"
                 ]
             },
             "PA": {
                 "name": "Pennsylvania (Medical Only)", 
                 "agency": "Department of Health",
-                "urls": [
-                    "https://www.health.pa.gov/topics/Documents/Programs/Medical%20Marijuana/DOH%20Medical%20Marijuana%20Regulations.pdf"
+                "main_url": "https://www.health.pa.gov/topics/programs/Medical%20Marijuana",
+                "mirror_domains": [
+                    "health.pa.gov/topics/programs/Medical%20Marijuana"
                 ]
             }
         }
     
     def create_state_directory(self, state_code: str) -> str:
-        """Create directory for state regulations"""
+        """Create directory for state website mirror"""
         state_dir = os.path.join(self.base_dir, state_code)
         os.makedirs(state_dir, exist_ok=True)
         return state_dir
     
-    def download_state_regulations(self, state_code: str) -> bool:
-        """Download all regulations for a specific state"""
-        if state_code not in self.state_urls:
+    def mirror_state_website(self, state_code: str) -> bool:
+        """Mirror entire regulatory website for a specific state"""
+        if state_code not in self.state_sites:
             logger.error(f"Unknown state code: {state_code}")
             return False
             
-        state_info = self.state_urls[state_code]
+        state_info = self.state_sites[state_code]
         state_dir = self.create_state_directory(state_code)
         
-        logger.info(f"Downloading regulations for {state_info['name']} ({state_code})")
+        logger.info(f"Mirroring website for {state_info['name']} ({state_code})")
         
         success = True
-        for i, url in enumerate(state_info['urls']):
+        for domain in state_info['mirror_domains']:
             try:
-                # Generate filename from URL
-                filename = f"{state_code}_regulation_{i+1}.pdf"
-                filepath = os.path.join(state_dir, filename)
+                # Create subdirectory for this domain
+                domain_dir = os.path.join(state_dir, domain.replace('/', '_').replace(':', ''))
+                os.makedirs(domain_dir, exist_ok=True)
                 
-                # Use wget to download
+                # Use wget to mirror the entire website
                 cmd = [
-                    'wget', 
-                    '--timeout=30',
-                    '--tries=3', 
-                    '--user-agent=Mozilla/5.0 (compatible; ComplianceBot/1.0)',
-                    '-O', filepath,
-                    url
+                    'wget',
+                    '--mirror',                    # Enable mirroring
+                    '--convert-links',             # Convert links for offline viewing
+                    '--adjust-extension',          # Add .html extensions
+                    '--page-requisites',           # Download CSS, JS, images
+                    '--no-parent',                 # Don't go up directories
+                    '--recursive',                 # Download recursively
+                    '--level=3',                   # Limit recursion depth
+                    '--wait=1',                    # Be polite with 1 second delay
+                    '--random-wait',               # Randomize wait times
+                    '--timeout=30',                # 30 second timeout
+                    '--tries=3',                   # 3 retry attempts
+                    '--reject=mp4,avi,mov,mp3,wav,zip,exe,dmg', # Skip large files
+                    '--user-agent=Mozilla/5.0 (compatible; ComplianceBot/1.0; +https://compliance-bot.com)',
+                    '--directory-prefix=' + domain_dir,
+                    f'https://{domain}'
                 ]
                 
-                logger.info(f"Downloading: {url}")
-                result = subprocess.run(cmd, capture_output=True, text=True)
+                logger.info(f"Mirroring: https://{domain}")
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)  # 30 min timeout
                 
                 if result.returncode == 0:
-                    logger.info(f"Successfully downloaded: {filename}")
+                    logger.info(f"Successfully mirrored: {domain}")
                 else:
-                    logger.error(f"Failed to download {url}: {result.stderr}")
-                    success = False
+                    logger.warning(f"Partial mirror of {domain}: {result.stderr}")
+                    # Don't mark as failed for partial downloads
                     
+            except subprocess.TimeoutExpired:
+                logger.warning(f"Mirror timeout for {domain} - continuing with partial download")
             except Exception as e:
-                logger.error(f"Error downloading {url}: {str(e)}")
+                logger.error(f"Error mirroring {domain}: {str(e)}")
                 success = False
         
         # Create metadata file
@@ -257,9 +292,10 @@ class RegulationDownloader:
             "state": state_code,
             "name": state_info['name'],
             "agency": state_info['agency'],
+            "main_url": state_info['main_url'],
+            "mirrored_domains": state_info['mirror_domains'],
             "last_updated": datetime.now().isoformat(),
-            "urls": state_info['urls'],
-            "download_success": success
+            "mirror_success": success
         }
         
         metadata_path = os.path.join(state_dir, 'metadata.json')
@@ -268,50 +304,53 @@ class RegulationDownloader:
             
         return success
     
-    def download_all_regulations(self) -> Dict[str, bool]:
-        """Download regulations for all states"""
-        logger.info("Starting download of all state regulations")
+    def mirror_all_websites(self) -> Dict[str, bool]:
+        """Mirror regulatory websites for all states"""
+        logger.info("Starting website mirroring for all state regulations")
         
         # Create base directory
         os.makedirs(self.base_dir, exist_ok=True)
         
         results = {}
-        for state_code in self.state_urls.keys():
-            results[state_code] = self.download_state_regulations(state_code)
+        for state_code in self.state_sites.keys():
+            results[state_code] = self.mirror_state_website(state_code)
             
         # Create summary report
         summary = {
-            "download_date": datetime.now().isoformat(),
-            "total_states": len(self.state_urls),
-            "successful_downloads": sum(results.values()),
-            "failed_downloads": len(self.state_urls) - sum(results.values()),
+            "mirror_date": datetime.now().isoformat(),
+            "total_states": len(self.state_sites),
+            "successful_mirrors": sum(results.values()),
+            "failed_mirrors": len(self.state_sites) - sum(results.values()),
             "results": results
         }
         
-        summary_path = os.path.join(self.base_dir, 'download_summary.json')
+        summary_path = os.path.join(self.base_dir, 'mirror_summary.json')
         with open(summary_path, 'w') as f:
             json.dump(summary, f, indent=2)
             
-        logger.info(f"Download complete. Success: {summary['successful_downloads']}/{summary['total_states']}")
+        logger.info(f"Mirroring complete. Success: {summary['successful_mirrors']}/{summary['total_states']}")
         return results
 
 def main():
-    """Main function to run the downloader"""
-    downloader = RegulationDownloader()
-    results = downloader.download_all_regulations()
+    """Main function to run the website mirror"""
+    mirror = RegulationMirror()
+    results = mirror.mirror_all_websites()
     
     # Print summary
     successful = sum(results.values())
     total = len(results)
-    print(f"\n📊 Download Summary:")
+    print(f"\n🌐 Website Mirror Summary:")
     print(f"✅ Successful: {successful}/{total}")
     print(f"❌ Failed: {total - successful}/{total}")
     
     if successful < total:
-        print("\n⚠️  Failed downloads:")
+        print("\n⚠️  Failed mirrors:")
         for state, success in results.items():
             if not success:
                 print(f"   - {state}")
+    
+    print(f"\n📁 Complete website mirrors stored in 'regulations/' directory")
+    print(f"📊 Check 'regulations/mirror_summary.json' for detailed results")
 
 if __name__ == "__main__":
     main()
