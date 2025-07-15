@@ -1,6 +1,6 @@
 # 🧬 Compliance Agent - Cannabis Regulatory Intelligence
 
-![ACCURACY](https://img.shields.io/badge/accuracy-0%25-red) ![RESPONSE TIME](https://img.shields.io/badge/response_time-1.0s-brightgreen) ![CONFIDENCE](https://img.shields.io/badge/confidence-62%25-yellow) ![STATUS](https://img.shields.io/badge/status-3_issues-yellow) ![RUN IN REPLIT](https://img.shields.io/badge/run_in-Replit-orange) ![BUILD](https://img.shields.io/badge/build-needs_work-orange) ![TESTS](https://img.shields.io/badge/tests-2/4-red)
+![ACCURACY](https://img.shields.io/badge/accuracy-0%25-red) ![RESPONSE TIME](https://img.shields.io/badge/response__time-1.0s-brightgreen) ![CONFIDENCE](https://img.shields.io/badge/confidence-62%25-yellow) ![STATUS](https://img.shields.io/badge/status-3__issues-yellow) ![RUN IN REPLIT](https://img.shields.io/badge/run__in-Replit-orange) ![BUILD](https://img.shields.io/badge/build-needs__work-orange) ![TESTS](https://img.shields.io/badge/tests-2%2F4-red)
 
 Advanced AI agent for cannabis industry operations with real-time performance metrics and automated testing capabilities.
 
@@ -30,7 +30,7 @@ This agent specializes in providing expert guidance and analysis for cannabis in
 ## 🚀 Quick Start
 
 ### Option 1: Run in Replit (Recommended)
-[![Run in Replit](https://replit.com/badge/github/F8ai/compliance-agent)](https://replit.com/@F8ai/compliance-agent)
+[![Run in Replit](https://img.shields.io/badge/Run%20in-Replit-orange?logo=replit)](https://replit.com/@F8ai/compliance-agent)
 
 ### Option 2: Local Development
 ```bash
