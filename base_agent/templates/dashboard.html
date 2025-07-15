@@ -498,38 +498,44 @@
         <div id="regulations-tab" class="tab-content">
             <div class="baseline-section">
                 <h3>📖 State Cannabis Regulations</h3>
-                <div class="state-selector">
-                    <select id="state-select" onchange="showRegulations()">
-                        <option value="">Select a state...</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="FL">Florida</option>
-                        <option value="IL">Illinois</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MD">Maryland</option>
-                        <option value="ME">Maine</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NY">New York</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="VA">Virginia</option>
-                        <option value="VT">Vermont</option>
-                        <option value="WA">Washington</option>
-                    </select>
-                </div>
                 <div id="regulations-content">
-                    <p>Select a state to view its cannabis regulations.</p>
+                    <div class="state-selector">
+                        <select id="state-select" onchange="loadStateRegulations()">
+                            <option value="">Select a State</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CA">California</option>
+                            <option value="WA">Washington</option>
+                            <option value="OR">Oregon</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="IL">Illinois</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="FL">Florida (Medical)</option>
+                            <option value="OH">Ohio (Medical)</option>
+                            <option value="PA">Pennsylvania (Medical)</option>
+                        </select>
+                    </div>
+                    <div id="mirror-status" style="display: none; margin: 10px 0; padding: 10px; border-radius: 5px;">
+                        <h4>Mirror Status</h4>
+                        <div id="mirror-details"></div>
+                    </div>
+                    <div id="regulation-display">
+                        <p>Select a state to view its cannabis regulations</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -554,59 +560,86 @@
             evt.currentTarget.classList.add("active");
         }
 
-        function showRegulations() {
-            const stateSelect = document.getElementById('state-select');
-            const regulationsContent = document.getElementById('regulations-content');
-            const selectedState = stateSelect.value;
-            
-            if (!selectedState) {
-                regulationsContent.innerHTML = '<p>Select a state to view its cannabis regulations.</p>';
+        function loadStateRegulations() {
+            const state = document.getElementById('state-select').value;
+            const display = document.getElementById('regulation-display');
+            const statusDiv = document.getElementById('mirror-status');
+            const statusDetails = document.getElementById('mirror-details');
+
+            if (!state) {
+                display.innerHTML = '<p>Select a state to view its cannabis regulations</p>';
+                statusDiv.style.display = 'none';
                 return;
             }
-            
-            fetch(`/api/regulations/${selectedState}`)
+
+            display.innerHTML = '<p>Loading regulations...</p>';
+            statusDiv.style.display = 'none';
+
+            fetch(`/api/regulations/${state}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        regulationsContent.innerHTML = `<p>Error loading regulations for ${selectedState}: ${data.error}</p>`;
+                        display.innerHTML = `<p>Error: ${data.error}</p>`;
                         return;
                     }
-                    
-                    let html = `<h4>📍 ${data.name} - ${data.agency}</h4>`;
-                    
-                    if (data.urls && data.urls.length > 0) {
-                        html += '<div class="regulation-links">';
-                        data.urls.forEach(url => {
+
+                    const metadata = data.metadata;
+
+                    // Show mirror status
+                    statusDiv.style.display = 'block';
+                    let statusColor = data.mirror_quality ? '#4CAF50' : '#f44336';
+                    let statusText = data.mirror_quality ? 'Good' : 'Failed';
+
+                    if (data.total_files > 0 && data.total_files < 10) {
+                        statusColor = '#ff9800';
+                        statusText = 'Partial';
+                    }
+
+                    statusDiv.style.backgroundColor = statusColor;
+                    statusDiv.style.color = 'white';
+
+                    statusDetails.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span><strong>Mirror Status:</strong> ${statusText}</span>
+                            <span><strong>Files:</strong> ${data.total_files || 0}</span>
+                            <span><strong>Size:</strong> ${data.total_size_mb || 0} MB</span>
+                            <span><strong>Updated:</strong> ${new Date(metadata.last_updated).toLocaleDateString()}</span>
+                        </div>
+                    `;
+
+                    let html = `
+                        <div class="regulation-info">
+                            <h3>${metadata.name}</h3>
+                            <p><strong>Agency:</strong> ${metadata.agency}</p>
+                        </div>
+                    `;
+
+                    if (data.domains && data.domains.length > 0) {
+                        html += '<div class="domains-list"><h4>Mirrored Domains:</h4>';
+                        data.domains.forEach(domain => {
+                            let domainStatus = domain.status || 'unknown';
+                            let statusIcon = domainStatus === 'good' ? '✅' : 
+                                           domainStatus === 'partial' ? '⚠️' : '❌';
                             html += `
-                                <div class="regulation-link">
-                                    <h4>${url.title}</h4>
-                                    <p><a href="${url.url}" target="_blank">${url.url}</a></p>
-                                    <p>Last updated: ${new Date(data.last_updated).toLocaleDateString()}</p>
+                                <div style="margin: 5px 0; padding: 5px; border-left: 3px solid ${domainStatus === 'good' ? '#4CAF50' : domainStatus === 'partial' ? '#ff9800' : '#f44336'};">
+                                    ${statusIcon} <strong>${domain.name}</strong> 
+                                    (${domain.files || 0} files, ${domain.size_mb || 0} MB)
                                 </div>
                             `;
                         });
                         html += '</div>';
-                        
-                        // Add primary regulation iframe
-                        if (data.main_url) {
-                            html += `
-                                <div style="margin-top: 20px;">
-                                    <h4>🌐 Primary Regulation Site</h4>
-                                    <iframe src="${data.main_url}" class="regulations-iframe" 
-                                            title="${data.name} Cannabis Regulations">
-                                    </iframe>
-                                </div>
-                            `;
-                        }
+
+                        // Show iframe for main URL
+                        html += `<iframe src="${metadata.main_url}" width="100%" height="600" style="border: 1px solid #ccc; margin-top: 20px;"></iframe>`;
                     } else {
-                        html += '<p>No regulation data available for this state.</p>';
+                        html += '<p>No regulatory domains available - mirror may have failed</p>';
                     }
-                    
-                    regulationsContent.innerHTML = html;
+
+                    display.innerHTML = html;
                 })
                 .catch(error => {
-                    console.error('Error fetching regulations:', error);
-                    regulationsContent.innerHTML = `<p>Error loading regulations for ${selectedState}.</p>`;
+                    display.innerHTML = `<p>Error loading regulations: ${error.message}</p>`;
+                    statusDiv.style.display = 'none';
                 });
         }
 

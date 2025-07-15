@@ -234,6 +234,43 @@ class RegulationMirror:
         os.makedirs(state_dir, exist_ok=True)
         return state_dir
     
+    def check_mirror_quality(self, state_dir: str, domain: str) -> dict:
+        """Check the quality of a mirrored domain"""
+        domain_dir = os.path.join(state_dir, domain.replace('/', '_').replace(':', ''))
+        
+        if not os.path.exists(domain_dir):
+            return {"status": "failed", "files": 0, "size": 0, "has_html": False}
+        
+        file_count = 0
+        total_size = 0
+        has_html = False
+        
+        for root, dirs, files in os.walk(domain_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                if os.path.exists(file_path):
+                    file_count += 1
+                    total_size += os.path.getsize(file_path)
+                    if file.endswith('.html'):
+                        has_html = True
+        
+        if file_count == 0:
+            status = "failed"
+        elif file_count < 5:
+            status = "partial"
+        elif has_html and file_count >= 10:
+            status = "good"
+        else:
+            status = "partial"
+            
+        return {
+            "status": status,
+            "files": file_count,
+            "size": total_size,
+            "has_html": has_html,
+            "size_mb": round(total_size / 1024 / 1024, 2)
+        }
+
     def mirror_state_website(self, state_code: str) -> bool:
         """Mirror entire regulatory website for a specific state"""
         if state_code not in self.state_sites:
@@ -246,6 +283,7 @@ class RegulationMirror:
         logger.info(f"Mirroring website for {state_info['name']} ({state_code})")
         
         success = True
+        domain_results = {}
         for domain in state_info['mirror_domains']:
             try:
                 # Create subdirectory for this domain
@@ -278,17 +316,27 @@ class RegulationMirror:
                 logger.info(f"Mirroring: https://{domain}")
                 result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)  # 30 min timeout
                 
+                # Check mirror quality regardless of return code
+                quality = self.check_mirror_quality(state_dir, domain)
+                domain_results[domain] = quality
+                
                 if result.returncode == 0:
-                    logger.info(f"Successfully mirrored: {domain}")
+                    logger.info(f"Successfully mirrored: {domain} ({quality['files']} files, {quality['size_mb']}MB)")
                 else:
                     logger.warning(f"Partial mirror of {domain}: {result.stderr}")
-                    # Don't mark as failed for partial downloads
                     
             except subprocess.TimeoutExpired:
                 logger.warning(f"Mirror timeout for {domain} - continuing with partial download")
+                quality = self.check_mirror_quality(state_dir, domain)
+                domain_results[domain] = quality
             except Exception as e:
                 logger.error(f"Error mirroring {domain}: {str(e)}")
+                quality = self.check_mirror_quality(state_dir, domain)
+                domain_results[domain] = quality
                 success = False
+        
+        # Determine overall success based on domain quality
+        overall_success = any(result['status'] in ['good', 'partial'] for result in domain_results.values())
         
         # Create metadata file
         metadata = {
@@ -297,8 +345,11 @@ class RegulationMirror:
             "agency": state_info['agency'],
             "main_url": state_info['main_url'],
             "mirrored_domains": state_info['mirror_domains'],
+            "domain_results": domain_results,
             "last_updated": datetime.now().isoformat(),
-            "mirror_success": success
+            "mirror_success": overall_success,
+            "total_files": sum(r['files'] for r in domain_results.values()),
+            "total_size_mb": sum(r['size_mb'] for r in domain_results.values())
         }
         
         metadata_path = os.path.join(state_dir, 'metadata.json')

@@ -1,4 +1,3 @@
-
 """
 Base Agent Web Server
 Provides dashboard and API endpoints for agent monitoring
@@ -18,35 +17,35 @@ class AgentServer:
         self.agent_name = agent_name
         self.port = port
         self.setup_routes()
-    
+
     def setup_routes(self):
         """Setup Flask routes"""
-        
+
         @self.app.route('/')
         def dashboard():
             """Main dashboard page"""
             return render_template('dashboard.html', agent_name=self.agent_name)
-        
+
         @self.app.route('/api/metrics')
         def get_metrics():
             """Get agent performance metrics"""
             return jsonify(self.get_agent_metrics())
-        
+
         @self.app.route('/api/baseline-results')
         def get_baseline_results():
             """Get baseline test results"""
             return jsonify(self.load_baseline_results())
-        
+
         @self.app.route('/api/baseline-questions')
         def get_baseline_questions():
             """Get baseline questions organized by category"""
             return jsonify(self.load_baseline_questions())
-        
+
         @self.app.route('/api/regulations/<state>')
         def get_regulations(state):
             """Get regulation data for a specific state"""
             return jsonify(self.load_state_regulations(state))
-        
+
         @self.app.route('/api/status')
         def get_status():
             """Get agent status"""
@@ -55,7 +54,7 @@ class AgentServer:
                 'status': 'running',
                 'timestamp': datetime.now().isoformat()
             })
-    
+
     def get_agent_metrics(self) -> Dict[str, Any]:
         """Load and return agent metrics"""
         try:
@@ -66,7 +65,7 @@ class AgentServer:
                 passed_tests = sum(1 for r in baseline_results['results'] if r.get('passed', False))
                 avg_response_time = sum(r.get('response_time', 0) for r in baseline_results['results']) / total_tests if total_tests > 0 else 1.0
                 accuracy = (passed_tests / total_tests * 100) if total_tests > 0 else 0
-                
+
                 return {
                     'accuracy': f"{accuracy:.0f}%",
                     'response_time': f"{avg_response_time:.1f}s",
@@ -77,7 +76,7 @@ class AgentServer:
                 }
         except Exception as e:
             print(f"Error loading metrics: {e}")
-        
+
         return {
             'accuracy': '0%',
             'response_time': '1.0s',
@@ -86,7 +85,7 @@ class AgentServer:
             'status': 'needs setup',
             'last_updated': datetime.now().isoformat()
         }
-    
+
     def load_baseline_results(self) -> Dict[str, Any]:
         """Load baseline test results"""
         # Try multiple paths for baseline results
@@ -94,7 +93,7 @@ class AgentServer:
             'baseline_results.json',
             os.path.join('..', 'baseline_results.json')
         ]
-        
+
         for results_path in paths_to_try:
             if os.path.exists(results_path):
                 try:
@@ -103,7 +102,7 @@ class AgentServer:
                 except Exception as e:
                     print(f"Error loading baseline results from {results_path}: {e}")
         return {}
-    
+
     def load_baseline_questions(self) -> Dict[str, Any]:
         """Load baseline questions"""
         # Try multiple paths for baseline.json
@@ -111,7 +110,7 @@ class AgentServer:
             'baseline.json',
             os.path.join('..', 'baseline.json')
         ]
-        
+
         for baseline_path in paths_to_try:
             if os.path.exists(baseline_path):
                 try:
@@ -120,7 +119,7 @@ class AgentServer:
                 except Exception as e:
                     print(f"Error loading baseline questions from {baseline_path}: {e}")
         return {}
-    
+
     def load_state_regulations(self, state: str) -> Dict[str, Any]:
         """Load regulation data for a specific state"""
         # Try multiple paths for regulations directory
@@ -128,17 +127,17 @@ class AgentServer:
             os.path.join('regulations', state, 'metadata.json'),
             os.path.join('..', 'regulations', state, 'metadata.json')
         ]
-        
+
         for metadata_path in paths_to_try:
             if os.path.exists(metadata_path):
                 try:
                     with open(metadata_path, 'r') as f:
                         data = json.load(f)
-                        
+
                     # Get list of available regulation URLs
                     regulation_dir = os.path.dirname(metadata_path)
                     urls = []
-                    
+
                     # Check for mirrored domains
                     if 'mirrored_domains' in data:
                         for domain in data['mirrored_domains']:
@@ -149,7 +148,7 @@ class AgentServer:
                                     'url': f"https://{domain}",
                                     'local_path': domain_dir
                                 })
-                    
+
                     # Add main URL if available
                     if 'main_url' in data:
                         urls.append({
@@ -157,7 +156,7 @@ class AgentServer:
                             'url': data['main_url'],
                             'local_path': None
                         })
-                    
+
                     return {
                         'state': state,
                         'name': data.get('name', state),
@@ -169,11 +168,51 @@ class AgentServer:
                     }
                 except Exception as e:
                     print(f"Error loading regulations for {state}: {e}")
-        
+
         return {
             'error': f'No regulation data found for state {state}'
         }
-    
+
+    @app.route('/api/regulations/<state>')
+    def get_state_regulations(state):
+        """Get regulations for a specific state"""
+        try:
+            state_dir = os.path.join('regulations', state.upper())
+            if not os.path.exists(state_dir):
+                return jsonify({"error": f"No regulations found for state {state}"}), 404
+
+            # Read metadata
+            metadata_path = os.path.join(state_dir, 'metadata.json')
+            if os.path.exists(metadata_path):
+                with open(metadata_path, 'r') as f:
+                    metadata = json.load(f)
+            else:
+                metadata = {"state": state.upper(), "name": "Unknown"}
+
+            # List available domains with status
+            domains = []
+            for item in os.listdir(state_dir):
+                item_path = os.path.join(state_dir, item)
+                if os.path.isdir(item_path) and item != '__pycache__':
+                    domain_info = {"name": item, "status": "unknown", "files": 0}
+
+                    # Get status from metadata if available
+                    if 'domain_results' in metadata and item.replace('_', '/').replace('_', ':') in metadata['domain_results']:
+                        domain_key = item.replace('_', '/').replace('_', ':')
+                        domain_info.update(metadata['domain_results'][domain_key])
+
+                    domains.append(domain_info)
+
+            return jsonify({
+                "metadata": metadata,
+                "domains": domains,
+                "mirror_quality": metadata.get('mirror_success', False),
+                "total_files": metadata.get('total_files', 0),
+                "total_size_mb": metadata.get('total_size_mb', 0)
+            })
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     def run(self, debug: bool = False):
         """Start the server"""
         print(f"Starting {self.agent_name} dashboard on http://0.0.0.0:{self.port}")
