@@ -1,189 +1,136 @@
 """
-ComplianceAgentAgent with LangChain, RAG, and Memory Support
+ComplianceAgent with LangChain, RAG, and Memory Support
+Inherits from base-agent for shared functionality
 """
 
 import os
-import json
+import sys
 from typing import Dict, List, Any
 from datetime import datetime
 
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.tools import BaseTool, Tool
-from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-from langchain.prompts import ChatPromptTemplate
+# Add base_agent to path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'base_agent'))
 
-class ComplianceAgentAgent:
+from base_agent.core.agent import BaseAgent
+from base_agent.utils.config import load_config
+from langchain.tools import Tool
+
+class ComplianceAgent(BaseAgent):
     """
     Cannabis regulatory compliance and legal guidance
     Specializes in Cannabis Regulatory Compliance
     """
-    
+
     def __init__(self, agent_path: str = "."):
-        self.agent_path = agent_path
-        self.user_memories = {}
-        
-        self._initialize_llm()
-        self._initialize_retriever()
-        self._initialize_tools()
+        # Load agent-specific config
+        config_path = os.path.join(agent_path, "agent_config.yaml")
+        self.config = load_config(config_path)
+
+        # Initialize base agent with config
+        super().__init__(
+            agent_name=self.config.agent.name,
+            description=self.config.agent.description,
+            domain=self.config.agent.domain,
+            agent_path=agent_path
+        )
+
+        # Add compliance-specific tools
+        self._add_compliance_tools()
+
+    def _add_compliance_tools(self):
+        """Add compliance-specific tools to the base agent"""
+        compliance_tools = [
+            self._create_regulatory_search_tool(),
+            self._create_compliance_check_tool(),
+            self._create_state_requirements_tool()
+        ]
+
+        # Add tools to base agent's tool list
+        self.tools.extend(compliance_tools)
+
+        # Reinitialize agent with new tools
         self._initialize_agent()
-    
-    def _initialize_llm(self):
-        """Initialize language model"""
-        self.llm = ChatOpenAI(
-            model="gpt-4o",
-            temperature=0.1,
-            max_tokens=2000
-        )
-    
-    def _initialize_retriever(self):
-        """Initialize RAG retriever"""
-        try:
-            vectorstore_path = os.path.join(self.agent_path, "rag", "vectorstore")
-            if os.path.exists(vectorstore_path):
-                embeddings = OpenAIEmbeddings()
-                self.vectorstore = FAISS.load_local(vectorstore_path, embeddings)
-                self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 5})
-            else:
-                self.retriever = None
-        except Exception as e:
-            print(f"Error loading vectorstore: {e}")
-            self.retriever = None
-    
-    def _initialize_tools(self):
-        """Initialize agent tools"""
-        self.tools = []
-        
-        if self.retriever:
-            self.tools.append(self._create_rag_tool())
-        
-        # Add agent-specific tools
-        for tool_name in ["regulatory_search","compliance_check","state_requirements"]:
-            self.tools.append(self._create_tool(tool_name))
-    
-    def _create_rag_tool(self):
-        """Create RAG search tool"""
-        def rag_search(query: str) -> str:
-            try:
-                docs = self.retriever.get_relevant_documents(query)
-                context = "\n\n".join([doc.page_content for doc in docs])
-                return f"Relevant information: {context}"
-            except Exception as e:
-                return f"Error searching knowledge base: {str(e)}"
-        
+
+    def _create_regulatory_search_tool(self):
+        """Create regulatory search tool"""
+        def regulatory_search(query: str) -> str:
+            # Use base agent's RAG functionality with compliance-specific context
+            if self.retriever:
+                try:
+                    docs = self.retriever.get_relevant_documents(f"cannabis regulation {query}")
+                    context = "\n\n".join([doc.page_content for doc in docs])
+                    return f"Regulatory guidance: {context}"
+                except Exception as e:
+                    return f"Error searching regulations: {str(e)}"
+            return "Regulatory search requires knowledge base setup"
+
         return Tool(
-            name="rag_search",
-            description=f"Search {config.domain} knowledge base for relevant information",
-            func=rag_search
+            name="regulatory_search",
+            description="Search cannabis regulatory database for compliance requirements",
+            func=regulatory_search
         )
-    
-    def _create_tool(self, tool_name: str):
-        """Create a tool dynamically"""
-        def tool_func(query: str) -> str:
-            return f"{tool_name.replace('_', ' ').title()} result for: {query}"
-        
+
+    def _create_compliance_check_tool(self):
+        """Create compliance check tool"""
+        def compliance_check(query: str) -> str:
+            return f"Compliance analysis for: {query}\n" \
+                   f"Status: Review required\n" \
+                   f"Recommendations: Consult current state regulations"
+
         return Tool(
-            name=tool_name,
-            description=f"{tool_name.replace('_', ' ').title()} for specialized analysis",
-            func=tool_func
+            name="compliance_check",
+            description="Perform compliance verification for cannabis operations",
+            func=compliance_check
         )
-    
-    def _initialize_agent(self):
-        """Initialize the LangChain agent"""
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", f"""You are a specialized AI agent for {config.description}.
-            
-Domain Expertise: Cannabis Regulatory Compliance
-            
-Provide expert guidance, analysis, and recommendations in this domain.
-Use available tools to gather information and provide comprehensive responses.
-Always cite sources and provide confidence scores.
+
+    def _create_state_requirements_tool(self):
+        """Create state requirements tool"""
+        def state_requirements(query: str) -> str:
+            return f"State requirements analysis for: {query}\n" \
+                   f"Jurisdiction: Multiple states applicable\n" \
+                   f"Key requirements: Licensing, testing, tracking, security"
+
+        return Tool(
+            name="state_requirements",
+            description="Analyze state-specific cannabis regulatory requirements",
+            func=state_requirements
+        )
+
+    def get_system_prompt(self) -> str:
+        """Override base system prompt with compliance-specific context"""
+        return f"""You are a specialized AI agent for {self.config.agent.description}.
+
+Domain Expertise: {self.config.agent.domain}
+
+You provide expert guidance on:
+- Cannabis regulatory compliance
+- State and federal cannabis laws
+- Licensing requirements
+- Testing and quality standards
+- Security and tracking requirements
+- Business compliance strategies
+
+Always:
+- Cite relevant regulations and sources
+- Provide jurisdiction-specific guidance
+- Include compliance confidence scores
+- Recommend consulting legal professionals for complex matters
 
 Available tools: {[tool.name for tool in self.tools]}
-"""),
-            ("human", "{input}"),
-            ("placeholder", "{agent_scratchpad}"),
-        ])
-        
-        agent = create_openai_tools_agent(self.llm, self.tools, prompt)
-        self.agent_executor = AgentExecutor(agent=agent, tools=self.tools, verbose=True)
-    
-    def _get_user_memory(self, user_id: str) -> ConversationBufferWindowMemory:
-        """Get or create memory for user"""
-        if user_id not in self.user_memories:
-            self.user_memories[user_id] = ConversationBufferWindowMemory(
-                k=10, return_messages=True
-            )
-        return self.user_memories[user_id]
-    
-    async def process_query(self, user_id: str, query: str, context: Dict = None) -> Dict[str, Any]:
-        """Process a user query with memory and context"""
-        try:
-            memory = self._get_user_memory(user_id)
-            
-            enhanced_query = f"Context: {context}\n\nQuery: {query}" if context else query
-            
-            result = await self.agent_executor.ainvoke({
-                "input": enhanced_query,
-                "chat_history": memory.chat_memory.messages
-            })
-            
-            confidence = self._calculate_confidence(result.get("output", ""))
-            memory.save_context({"input": query}, {"output": result["output"]})
-            
-            return {
-                "response": result["output"],
-                "confidence": confidence,
-                "timestamp": datetime.now().isoformat(),
-                "agent": "compliance-agent",
-                "user_id": user_id
-            }
-            
-        except Exception as e:
-            return {
-                "error": str(e),
-                "response": f"Error processing query: {str(e)}",
-                "confidence": 0.0,
-                "timestamp": datetime.now().isoformat(),
-                "agent": "compliance-agent",
-                "user_id": user_id
-            }
-    
-    def _calculate_confidence(self, response: str) -> float:
-        """Calculate confidence score for response"""
-        if not response or len(response) < 50:
-            return 0.3
-        
-        indicators = [
-            "research shows" in response.lower(),
-            "studies indicate" in response.lower(),
-            "according to" in response.lower(),
-            len(response) > 200,
-            "recommendation" in response.lower()
-        ]
-        
-        base_confidence = sum(indicators) / len(indicators)
-        return min(0.95, max(0.4, base_confidence))
-    
-    def clear_user_memory(self, user_id: str):
-        """Clear memory for a specific user"""
-        if user_id in self.user_memories:
-            del self.user_memories[user_id]
+"""
 
-def create_compliance_agent(agent_path: str = ".") -> ComplianceAgentAgent:
-    """Create and return a configured compliance-agent"""
-    return ComplianceAgentAgent(agent_path)
+def create_compliance_agent(agent_path: str = ".") -> ComplianceAgent:
+    """Create and return a configured compliance agent"""
+    return ComplianceAgent(agent_path)
 
 if __name__ == "__main__":
     import asyncio
-    
+
     async def main():
         agent = create_compliance_agent()
         result = await agent.process_query(
             user_id="test_user",
-            query="Provide analysis of current cannabis regulatory compliance requirements"
+            query="What are the key cannabis regulatory compliance requirements for Colorado?"
         )
         print(f"Response: {result['response']}")
         print(f"Confidence: {result['confidence']}")
