@@ -38,6 +38,24 @@ mode = "sequential"
 task = "shell.exec"
 args = "python start_server.py"
 
+[[workflows.workflow]]
+name = "Download Regulations"
+author = 42906269
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python download_regulations.py"
+
+[[workflows.workflow]]
+name = "Update Regulations Daily"
+author = 42906269
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python update_regulations_daily.py"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
