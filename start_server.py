@@ -8,9 +8,11 @@ import sys
 import os
 
 # Add base_agent to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'base_agent'))
+current_dir = os.path.dirname(__file__)
+base_agent_path = os.path.join(current_dir, "base_agent")
+sys.path.insert(0, base_agent_path)
 
-from base_agent.server import AgentServer
+from server import AgentServer
 
 if __name__ == "__main__":
     # Create server instance for compliance agent
