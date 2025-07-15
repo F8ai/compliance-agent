@@ -3,28 +3,17 @@
   "name": "California",
   "agency": "Department of Cannabis Control",
   "main_url": "https://cannabis.ca.gov",
-  "mirrored_domains": [
-    "cannabis.ca.gov",
-    "govt.westlaw.com/calregs/Browse/Home/California/CaliforniaCodeofRegulations?guid=I8E0B0A00BB4B11E5A7F1E54A5F5A8FD7"
+  "downloaded_urls": [
+    "https://cannabis.ca.gov",
+    "https://cannabis.ca.gov/",
+    "https://cannabis.ca.gov/assets/cannabis_favicon_16x16.png",
+    "https://cannabis.ca.gov/applicants/ceqa-review-for-cannabis-businesses/",
+    "https://cannabis.ca.gov/licensees/cannaconnect-compliance-hub/",
+    "https://cannabis.ca.gov/consumers/medicinal-cannabis/",
+    "https://cannabis.ca.gov/licensees/"
   ],
-  "domain_results": {
-    "cannabis.ca.gov": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    },
-    "govt.westlaw.com/calregs/Browse/Home/California/CaliforniaCodeofRegulations?guid=I8E0B0A00BB4B11E5A7F1E54A5F5A8FD7": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    }
-  },
-  "last_updated": "2025-07-15T20:11:50.701702",
-  "mirror_success": false,
-  "total_files": 0,
-  "total_size_mb": 0.0
+  "last_updated": "2025-07-15T20:17:53.741296",
+  "total_files": 7,
+  "total_size_mb": 0.63,
+  "mirror_success": true
 }

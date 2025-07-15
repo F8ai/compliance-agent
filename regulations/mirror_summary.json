@@ -1,33 +1,14 @@
 {
-  "mirror_date": "2025-07-15T20:12:01.508539",
-  "total_states": 25,
-  "successful_mirrors": 2,
-  "failed_mirrors": 23,
+  "mirror_date": "2025-07-15T20:19:06.592364",
+  "total_states": 5,
+  "successful_mirrors": 3,
+  "failed_mirrors": 2,
   "results": {
+    "CA": true,
     "CO": false,
-    "CA": false,
     "WA": false,
-    "OR": false,
-    "AK": false,
-    "AZ": false,
-    "CT": false,
-    "DE": true,
-    "IL": false,
-    "ME": false,
-    "MD": false,
-    "MA": false,
-    "MI": false,
-    "MO": false,
-    "MT": false,
-    "NV": false,
-    "NJ": false,
-    "NM": false,
-    "NY": false,
-    "RI": false,
-    "VT": false,
-    "VA": true,
-    "FL": false,
-    "OH": false,
-    "PA": false
-  }
+    "NY": true,
+    "OR": true
+  },
+  "method": "simple_http"
 }

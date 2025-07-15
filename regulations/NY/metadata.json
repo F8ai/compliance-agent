@@ -3,28 +3,18 @@
   "name": "New York",
   "agency": "Office of Cannabis Management",
   "main_url": "https://cannabis.ny.gov",
-  "mirrored_domains": [
-    "cannabis.ny.gov",
-    "govt.westlaw.com/nycrr/Browse/Home/NewYork/NewYorkCodesRulesandRegulations?guid=I5f9f8e80b09011dda432a117e6e0f345"
+  "downloaded_urls": [
+    "https://cannabis.ny.gov",
+    "https://cannabis.ny.gov/",
+    "https://cannabis.ny.gov/about-0",
+    "https://cannabis.ny.gov/cannabis-control-board-meetings",
+    "https://cannabis.ny.gov/cannabis-advisory-board-meetings",
+    "https://cannabis.ny.gov/licensing",
+    "https://cannabis.ny.gov/regulations",
+    "https://cannabis.ny.gov/adult-use"
   ],
-  "domain_results": {
-    "cannabis.ny.gov": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    },
-    "govt.westlaw.com/nycrr/Browse/Home/NewYork/NewYorkCodesRulesandRegulations?guid=I5f9f8e80b09011dda432a117e6e0f345": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    }
-  },
-  "last_updated": "2025-07-15T20:11:56.739138",
-  "mirror_success": false,
-  "total_files": 0,
-  "total_size_mb": 0.0
+  "last_updated": "2025-07-15T20:18:56.885813",
+  "total_files": 8,
+  "total_size_mb": 1.01,
+  "mirror_success": true
 }

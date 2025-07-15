@@ -3,36 +3,9 @@
   "name": "Colorado",
   "agency": "Marijuana Enforcement Division",
   "main_url": "https://sbg.colorado.gov/med-enforcement",
-  "mirrored_domains": [
-    "sbg.colorado.gov/med-enforcement",
-    "leg.colorado.gov/bills/cannabis",
-    "casetext.com/regulation/colorado-administrative-code/department-1000-department-of-revenue/division-1203-marijuana-enforcement-division"
-  ],
-  "domain_results": {
-    "sbg.colorado.gov/med-enforcement": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    },
-    "leg.colorado.gov/bills/cannabis": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    },
-    "casetext.com/regulation/colorado-administrative-code/department-1000-department-of-revenue/division-1203-marijuana-enforcement-division": {
-      "status": "failed",
-      "files": 0,
-      "size": 0,
-      "has_html": false,
-      "size_mb": 0.0
-    }
-  },
-  "last_updated": "2025-07-15T20:11:50.301309",
-  "mirror_success": false,
+  "downloaded_urls": [],
+  "last_updated": "2025-07-15T20:18:19.478130",
   "total_files": 0,
-  "total_size_mb": 0.0
+  "total_size_mb": 0.0,
+  "mirror_success": false
 }
