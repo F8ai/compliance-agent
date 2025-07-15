@@ -204,6 +204,20 @@
             margin-right: 4px;
         }
 
+        .expected-answer {
+            background: #f8f9fa;
+            border-left: 3px solid #3498db;
+            padding: 8px 12px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+
+        .expected-answer strong {
+            color: #3498db;
+        }
+
         .refresh-info {
             text-align: center;
             color: #7f8c8d;
@@ -412,6 +426,7 @@
                                             <span class="difficulty-badge ${question.difficulty}">${question.difficulty}</span>
                                         </div>
                                         <div class="question-text">${question.question}</div>
+                                        ${question.expected_answer ? `<div class="expected-answer"><strong>Expected Answer:</strong> ${question.expected_answer}</div>` : ''}
                                         ${tags ? `<div class="question-tags">${tags}</div>` : ''}
                                     </div>
                                 `;
