@@ -6,6 +6,17 @@
   "mirrored_domains": [
     "mass-cannabis-control.com"
   ],
-  "last_updated": "2025-07-15T19:39:52.105679",
-  "mirror_success": false
+  "domain_results": {
+    "mass-cannabis-control.com": {
+      "status": "failed",
+      "files": 0,
+      "size": 0,
+      "has_html": false,
+      "size_mb": 0.0
+    }
+  },
+  "last_updated": "2025-07-15T19:42:39.765538",
+  "mirror_success": false,
+  "total_files": 0,
+  "total_size_mb": 0.0
 }

@@ -6,6 +6,17 @@
   "mirrored_domains": [
     "ccb.nv.gov"
   ],
-  "last_updated": "2025-07-15T19:39:52.137916",
-  "mirror_success": false
+  "domain_results": {
+    "ccb.nv.gov": {
+      "status": "failed",
+      "files": 0,
+      "size": 0,
+      "has_html": false,
+      "size_mb": 0.0
+    }
+  },
+  "last_updated": "2025-07-15T19:42:39.809812",
+  "mirror_success": false,
+  "total_files": 0,
+  "total_size_mb": 0.0
 }

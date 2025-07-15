@@ -7,6 +7,24 @@
     "sbg.colorado.gov/med-enforcement",
     "leg.colorado.gov/bills/cannabis"
   ],
-  "last_updated": "2025-07-15T19:39:52.023698",
-  "mirror_success": false
+  "domain_results": {
+    "sbg.colorado.gov/med-enforcement": {
+      "status": "failed",
+      "files": 0,
+      "size": 0,
+      "has_html": false,
+      "size_mb": 0.0
+    },
+    "leg.colorado.gov/bills/cannabis": {
+      "status": "failed",
+      "files": 0,
+      "size": 0,
+      "has_html": false,
+      "size_mb": 0.0
+    }
+  },
+  "last_updated": "2025-07-15T19:42:39.682142",
+  "mirror_success": false,
+  "total_files": 0,
+  "total_size_mb": 0.0
 }
