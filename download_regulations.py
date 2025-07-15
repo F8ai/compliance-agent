@@ -285,72 +285,150 @@ class RegulationMirror:
     def scrape_with_browser(self, domain: str, domain_dir: str) -> bool:
         """Use selenium to scrape websites that block wget"""
         if not SELENIUM_AVAILABLE:
+            logger.warning("Selenium not available, skipping browser scraping")
             return False
             
         try:
             # Setup Chrome options for headless browsing
             chrome_options = Options()
-            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--headless=new')
             chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--disable-dev-shm-usage')
             chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+            chrome_options.add_argument('--disable-extensions')
             chrome_options.add_argument('--window-size=1920,1080')
-            chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+            chrome_options.add_argument('--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            chrome_options.add_experimental_option('useAutomationExtension', False)
             
-            driver = webdriver.Chrome(options=chrome_options)
-            driver.set_page_load_timeout(60)
+            # Try to create Chrome driver
+            try:
+                from selenium.webdriver.chrome.service import Service
+                from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+                
+                # Set up capabilities
+                caps = DesiredCapabilities.CHROME
+                caps['goog:loggingPrefs'] = {'browser': 'ALL'}
+                
+                driver = webdriver.Chrome(options=chrome_options, desired_capabilities=caps)
+                driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                driver.set_page_load_timeout(60)
+                
+            except Exception as e:
+                logger.warning(f"Failed to initialize Chrome driver: {e}")
+                return False
             
             # Visit main page
             url = f"https://{domain}"
             logger.info(f"Browser scraping: {url}")
-            driver.get(url)
             
-            # Wait for page to load
-            time.sleep(5)
-            
-            # Save main page
-            main_file = os.path.join(domain_dir, 'index.html')
-            os.makedirs(os.path.dirname(main_file), exist_ok=True)
-            with open(main_file, 'w', encoding='utf-8') as f:
-                f.write(driver.page_source)
-            
-            # Try to find and download regulations links
             try:
-                # Look for common regulation-related links
-                regulation_links = driver.find_elements(By.PARTIAL_LINK_TEXT, "regulation")
-                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "rule"))
-                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "law"))
-                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "cannabis"))
-                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "marijuana"))
+                driver.get(url)
+                # Wait for page to load completely
+                time.sleep(8)
                 
-                # Download up to 10 linked pages
-                for i, link in enumerate(regulation_links[:10]):
+                # Check if page loaded successfully
+                if "blocked" in driver.page_source.lower() or "access denied" in driver.page_source.lower():
+                    logger.warning(f"Access blocked for {domain}")
+                    driver.quit()
+                    return False
+                
+                # Save main page
+                main_file = os.path.join(domain_dir, 'index.html')
+                os.makedirs(os.path.dirname(main_file), exist_ok=True)
+                with open(main_file, 'w', encoding='utf-8') as f:
+                    f.write(driver.page_source)
+                
+                logger.info(f"Successfully saved main page for {domain}")
+                
+                # Try to find and download regulations links
+                try:
+                    # Look for common regulation-related links with multiple strategies
+                    regulation_links = []
+                    
+                    # Strategy 1: Direct text matching
+                    keywords = ["regulation", "rule", "law", "cannabis", "marijuana", "licensing", "compliance", "statute"]
+                    for keyword in keywords:
+                        try:
+                            links = driver.find_elements(By.PARTIAL_LINK_TEXT, keyword)
+                            regulation_links.extend(links)
+                        except:
+                            continue
+                    
+                    # Strategy 2: Look for PDF links
                     try:
-                        href = link.get_attribute('href')
-                        if href and href.startswith('http'):
-                            driver.get(href)
-                            time.sleep(3)
+                        pdf_links = driver.find_elements(By.XPATH, "//a[contains(@href, '.pdf')]")
+                        regulation_links.extend(pdf_links[:5])  # Limit PDFs
+                    except:
+                        pass
+                    
+                    # Strategy 3: Look for common navigation patterns
+                    try:
+                        nav_links = driver.find_elements(By.XPATH, "//nav//a | //ul[@class*='nav']//a | //div[@class*='menu']//a")
+                        regulation_links.extend(nav_links[:10])
+                    except:
+                        pass
+                    
+                    # Remove duplicates and limit
+                    unique_hrefs = set()
+                    unique_links = []
+                    for link in regulation_links:
+                        try:
+                            href = link.get_attribute('href')
+                            if href and href not in unique_hrefs and href.startswith('http'):
+                                unique_hrefs.add(href)
+                                unique_links.append(link)
+                                if len(unique_links) >= 15:
+                                    break
+                        except:
+                            continue
+                    
+                    # Download linked pages
+                    for i, link in enumerate(unique_links):
+                        try:
+                            href = link.get_attribute('href')
+                            text = link.text.strip()[:50] if link.text else f"page_{i+1}"
                             
-                            filename = f"regulation_{i+1}.html"
+                            logger.info(f"Downloading linked page {i+1}: {text}")
+                            driver.get(href)
+                            time.sleep(4)
+                            
+                            # Create safe filename
+                            safe_filename = "".join(c for c in text if c.isalnum() or c in (' ', '-', '_')).rstrip()
+                            if not safe_filename:
+                                safe_filename = f"regulation_{i+1}"
+                            
+                            filename = f"{safe_filename}.html"
                             file_path = os.path.join(domain_dir, filename)
+                            
                             with open(file_path, 'w', encoding='utf-8') as f:
                                 f.write(driver.page_source)
                                 
-                            logger.info(f"Downloaded regulation page: {filename}")
-                    except Exception as e:
-                        logger.warning(f"Failed to download linked page {i}: {e}")
-                        continue
-                        
+                            logger.info(f"Successfully downloaded: {filename}")
+                            
+                        except Exception as e:
+                            logger.warning(f"Failed to download linked page {i}: {e}")
+                            continue
+                            
+                except Exception as e:
+                    logger.warning(f"Failed to find regulation links: {e}")
+                
+                driver.quit()
+                return True
+                
             except Exception as e:
-                logger.warning(f"Failed to find regulation links: {e}")
-            
-            driver.quit()
-            return True
+                logger.error(f"Failed to load page {url}: {e}")
+                driver.quit()
+                return False
             
         except Exception as e:
             logger.error(f"Browser scraping failed for {domain}: {e}")
             if 'driver' in locals():
-                driver.quit()
+                try:
+                    driver.quit()
+                except:
+                    pass
             return False
 
     def mirror_state_website(self, state_code: str) -> bool:
@@ -435,32 +513,110 @@ class RegulationMirror:
                 else:
                     logger.warning(f"wget failed for {domain}, trying alternative approach")
                     
-                    # Approach 2: Use curl for single page downloads
+                    # Approach 2: Enhanced requests-based scraping
                     try:
                         import requests
+                        from urllib.parse import urljoin, urlparse
+                        import re
+                        
                         session = requests.Session()
                         session.headers.update({
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                            'Accept-Language': 'en-US,en;q=0.5',
-                            'Accept-Encoding': 'gzip, deflate',
+                            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Accept-Encoding': 'gzip, deflate, br',
                             'Connection': 'keep-alive',
-                            'Upgrade-Insecure-Requests': '1'
+                            'Upgrade-Insecure-Requests': '1',
+                            'Sec-Fetch-Dest': 'document',
+                            'Sec-Fetch-Mode': 'navigate',
+                            'Sec-Fetch-Site': 'none',
+                            'Cache-Control': 'max-age=0'
                         })
                         
-                        # Download main page
-                        response = session.get(f'https://{domain}', timeout=30, verify=False)
+                        base_url = f'https://{domain}'
+                        
+                        # Download main page with retries
+                        for attempt in range(3):
+                            try:
+                                response = session.get(base_url, timeout=45, verify=False, allow_redirects=True)
+                                if response.status_code == 200:
+                                    break
+                                elif response.status_code in [403, 429]:
+                                    # Try with different user agent
+                                    session.headers['User-Agent'] = f'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.{attempt}'
+                                    time.sleep(5 * (attempt + 1))
+                                else:
+                                    time.sleep(2)
+                            except requests.exceptions.SSLError:
+                                # Try HTTP instead
+                                base_url = f'http://{domain}'
+                                response = session.get(base_url, timeout=45, allow_redirects=True)
+                                break
+                            except:
+                                time.sleep(2)
+                        
                         if response.status_code == 200:
                             main_file = os.path.join(domain_dir, 'index.html')
                             os.makedirs(os.path.dirname(main_file), exist_ok=True)
+                            
                             with open(main_file, 'w', encoding='utf-8') as f:
                                 f.write(response.text)
-                            success = True
+                            
                             logger.info(f"Successfully downloaded main page for {domain}")
+                            
+                            # Extract and download important links
+                            try:
+                                # Find regulation-related links in the HTML
+                                regulation_patterns = [
+                                    r'href=["\']([^"\']*(?:regulation|rule|law|cannabis|marijuana|licensing|compliance)[^"\']*)["\']',
+                                    r'href=["\']([^"\']*\.pdf)["\']',
+                                    r'href=["\']([^"\']*(?:/regulation|/rules|/laws|/cannabis|/marijuana)[^"\']*)["\']'
+                                ]
+                                
+                                found_links = set()
+                                for pattern in regulation_patterns:
+                                    matches = re.findall(pattern, response.text, re.IGNORECASE)
+                                    for match in matches:
+                                        full_url = urljoin(base_url, match)
+                                        if urlparse(full_url).netloc == urlparse(base_url).netloc:
+                                            found_links.add(full_url)
+                                        if len(found_links) >= 20:
+                                            break
+                                
+                                # Download up to 10 additional pages
+                                for i, link_url in enumerate(list(found_links)[:10]):
+                                    try:
+                                        link_response = session.get(link_url, timeout=30, verify=False)
+                                        if link_response.status_code == 200:
+                                            # Create filename from URL
+                                            path_part = urlparse(link_url).path
+                                            filename = path_part.split('/')[-1] if path_part.split('/')[-1] else f"page_{i+1}"
+                                            if not filename.endswith('.html') and not filename.endswith('.pdf'):
+                                                filename += '.html'
+                                            
+                                            # Clean filename
+                                            filename = re.sub(r'[^\w\-_\.]', '_', filename)
+                                            file_path = os.path.join(domain_dir, filename)
+                                            
+                                            with open(file_path, 'w', encoding='utf-8') as f:
+                                                f.write(link_response.text)
+                                            
+                                            logger.info(f"Downloaded additional page: {filename}")
+                                            time.sleep(2)  # Be nice to the server
+                                            
+                                    except Exception as e:
+                                        logger.warning(f"Failed to download {link_url}: {e}")
+                                        continue
+                                        
+                            except Exception as e:
+                                logger.warning(f"Failed to extract additional links: {e}")
+                            
+                            success = True
                         else:
-                            logger.warning(f"Failed to download main page for {domain}: {response.status_code}")
+                            logger.warning(f"Failed to download main page for {domain}: HTTP {response.status_code}")
+                            
                     except Exception as e:
-                        logger.warning(f"Python requests also failed for {domain}: {e}")
+                        logger.warning(f"Enhanced requests scraping failed for {domain}: {e}")
                         
                         # Approach 3: Use curl as fallback
                         curl_cmd = [
