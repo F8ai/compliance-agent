@@ -438,10 +438,8 @@
                                     <div class="question-item ${question.difficulty}">
                                         <div class="question-header">
                                             <span class="question-id">${question.id}</span>
-                                            <div>
-                                                <span class="difficulty-badge ${question.difficulty}">${question.difficulty}</span>
-                                                ${question.state ? `<span class="state-badge ${question.state.toLowerCase() === 'multi' ? 'multi' : ''}">${question.state}</span>` : ''}
-                                            </div>
+                                            <span class="difficulty-badge ${question.difficulty}">${question.difficulty}</span>
+                                            <span class="state-badge">${Array.isArray(question.state) ? question.state.join(', ') : question.state}</span>
                                         </div>
                                         <div class="question-text">${question.question}</div>
                                         ${question.expected_answer ? `<div class="expected-answer"><strong>Expected Answer:</strong> ${question.expected_answer}</div>` : ''}
