@@ -346,6 +346,107 @@
             text-decoration: underline;
         }
 
+        .region-section {
+            margin-bottom: 25px;
+        }
+
+        .region-header {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #ecf0f1 0%, #d5dbdb 100%);
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .state-tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .state-tile {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .state-tile:hover {
+            border-color: #3498db;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .state-tile.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+        }
+
+        .state-tile.medical {
+            border-color: #9c27b0;
+        }
+
+        .state-tile.medical:hover {
+            border-color: #7b1fa2;
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.15);
+        }
+
+        .state-name {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .state-code {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .mirror-indicator {
+            font-size: 1.5em;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .mirror-indicator.good { color: #27ae60; }
+        .mirror-indicator.partial { color: #f39c12; }
+        .mirror-indicator.failed { color: #e74c3c; }
+        .mirror-indicator.loading { color: #95a5a6; }
+
+        .medical-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #9c27b0;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        #state-tiles-grid {
+            margin-bottom: 20px;
+        }
+
         /* Mobile-specific styles */
         @media (max-width: 768px) {
             body {
@@ -499,42 +600,180 @@
             <div class="baseline-section">
                 <h3>📖 State Cannabis Regulations</h3>
                 <div id="regulations-content">
-                    <div class="state-selector">
-                        <select id="state-select" onchange="loadStateRegulations()">
-                            <option value="">Select a State</option>
-                            <option value="CO">Colorado</option>
-                            <option value="CA">California</option>
-                            <option value="WA">Washington</option>
-                            <option value="OR">Oregon</option>
-                            <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <option value="CT">Connecticut</option>
-                            <option value="DE">Delaware</option>
-                            <option value="IL">Illinois</option>
-                            <option value="ME">Maine</option>
-                            <option value="MD">Maryland</option>
-                            <option value="MA">Massachusetts</option>
-                            <option value="MI">Michigan</option>
-                            <option value="MO">Missouri</option>
-                            <option value="MT">Montana</option>
-                            <option value="NV">Nevada</option>
-                            <option value="NJ">New Jersey</option>
-                            <option value="NM">New Mexico</option>
-                            <option value="NY">New York</option>
-                            <option value="RI">Rhode Island</option>
-                            <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>
-                            <option value="FL">Florida (Medical)</option>
-                            <option value="OH">Ohio (Medical)</option>
-                            <option value="PA">Pennsylvania (Medical)</option>
-                        </select>
+                    <div id="state-tiles-grid">
+                        <div class="region-section">
+                            <h4 class="region-header">🏔️ West Coast</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="CA" onclick="selectState('CA')">
+                                    <div class="state-name">California</div>
+                                    <div class="state-code">CA</div>
+                                    <div class="mirror-indicator" id="mirror-CA">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="WA" onclick="selectState('WA')">
+                                    <div class="state-name">Washington</div>
+                                    <div class="state-code">WA</div>
+                                    <div class="mirror-indicator" id="mirror-WA">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="OR" onclick="selectState('OR')">
+                                    <div class="state-name">Oregon</div>
+                                    <div class="state-code">OR</div>
+                                    <div class="mirror-indicator" id="mirror-OR">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="AK" onclick="selectState('AK')">
+                                    <div class="state-name">Alaska</div>
+                                    <div class="state-code">AK</div>
+                                    <div class="mirror-indicator" id="mirror-AK">⏳</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="region-section">
+                            <h4 class="region-header">🏜️ Southwest</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="AZ" onclick="selectState('AZ')">
+                                    <div class="state-name">Arizona</div>
+                                    <div class="state-code">AZ</div>
+                                    <div class="mirror-indicator" id="mirror-AZ">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="NV" onclick="selectState('NV')">
+                                    <div class="state-name">Nevada</div>
+                                    <div class="state-code">NV</div>
+                                    <div class="mirror-indicator" id="mirror-NV">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="CO" onclick="selectState('CO')">
+                                    <div class="state-name">Colorado</div>
+                                    <div class="state-code">CO</div>
+                                    <div class="mirror-indicator" id="mirror-CO">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="NM" onclick="selectState('NM')">
+                                    <div class="state-name">New Mexico</div>
+                                    <div class="state-code">NM</div>
+                                    <div class="mirror-indicator" id="mirror-NM">⏳</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="region-section">
+                            <h4 class="region-header">🌲 Mountain & Plains</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="MT" onclick="selectState('MT')">
+                                    <div class="state-name">Montana</div>
+                                    <div class="state-code">MT</div>
+                                    <div class="mirror-indicator" id="mirror-MT">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="MO" onclick="selectState('MO')">
+                                    <div class="state-name">Missouri</div>
+                                    <div class="state-code">MO</div>
+                                    <div class="mirror-indicator" id="mirror-MO">⏳</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="region-section">
+                            <h4 class="region-header">🏭 Midwest</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="IL" onclick="selectState('IL')">
+                                    <div class="state-name">Illinois</div>
+                                    <div class="state-code">IL</div>
+                                    <div class="mirror-indicator" id="mirror-IL">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="MI" onclick="selectState('MI')">
+                                    <div class="state-name">Michigan</div>
+                                    <div class="state-code">MI</div>
+                                    <div class="mirror-indicator" id="mirror-MI">⏳</div>
+                                </div>
+                                <div class="state-tile medical" data-state="OH" onclick="selectState('OH')">
+                                    <div class="state-name">Ohio</div>
+                                    <div class="state-code">OH</div>
+                                    <div class="mirror-indicator" id="mirror-OH">⏳</div>
+                                    <div class="medical-badge">Medical</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="region-section">
+                            <h4 class="region-header">🗽 Northeast</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="NY" onclick="selectState('NY')">
+                                    <div class="state-name">New York</div>
+                                    <div class="state-code">NY</div>
+                                    <div class="mirror-indicator" id="mirror-NY">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="MA" onclick="selectState('MA')">
+                                    <div class="state-name">Massachusetts</div>
+                                    <div class="state-code">MA</div>
+                                    <div class="mirror-indicator" id="mirror-MA">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="VT" onclick="selectState('VT')">
+                                    <div class="state-name">Vermont</div>
+                                    <div class="state-code">VT</div>
+                                    <div class="mirror-indicator" id="mirror-VT">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="ME" onclick="selectState('ME')">
+                                    <div class="state-name">Maine</div>
+                                    <div class="state-code">ME</div>
+                                    <div class="mirror-indicator" id="mirror-ME">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="CT" onclick="selectState('CT')">
+                                    <div class="state-name">Connecticut</div>
+                                    <div class="state-code">CT</div>
+                                    <div class="mirror-indicator" id="mirror-CT">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="RI" onclick="selectState('RI')">
+                                    <div class="state-name">Rhode Island</div>
+                                    <div class="state-code">RI</div>
+                                    <div class="mirror-indicator" id="mirror-RI">⏳</div>
+                                </div>
+                                <div class="state-tile medical" data-state="PA" onclick="selectState('PA')">
+                                    <div class="state-name">Pennsylvania</div>
+                                    <div class="state-code">PA</div>
+                                    <div class="mirror-indicator" id="mirror-PA">⏳</div>
+                                    <div class="medical-badge">Medical</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="region-section">
+                            <h4 class="region-header">🌊 Mid-Atlantic & South</h4>
+                            <div class="state-tiles">
+                                <div class="state-tile" data-state="NJ" onclick="selectState('NJ')">
+                                    <div class="state-name">New Jersey</div>
+                                    <div class="state-code">NJ</div>
+                                    <div class="mirror-indicator" id="mirror-NJ">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="DE" onclick="selectState('DE')">
+                                    <div class="state-name">Delaware</div>
+                                    <div class="state-code">DE</div>
+                                    <div class="mirror-indicator" id="mirror-DE">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="MD" onclick="selectState('MD')">
+                                    <div class="state-name">Maryland</div>
+                                    <div class="state-code">MD</div>
+                                    <div class="mirror-indicator" id="mirror-MD">⏳</div>
+                                </div>
+                                <div class="state-tile" data-state="VA" onclick="selectState('VA')">
+                                    <div class="state-name">Virginia</div>
+                                    <div class="state-code">VA</div>
+                                    <div class="mirror-indicator" id="mirror-VA">⏳</div>
+                                </div>
+                                <div class="state-tile medical" data-state="FL" onclick="selectState('FL')">
+                                    <div class="state-name">Florida</div>
+                                    <div class="state-code">FL</div>
+                                    <div class="mirror-indicator" id="mirror-FL">⏳</div>
+                                    <div class="medical-badge">Medical</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="mirror-status" style="display: none; margin: 10px 0; padding: 10px; border-radius: 5px;">
-                        <h4>Mirror Status</h4>
-                        <div id="mirror-details"></div>
-                    </div>
-                    <div id="regulation-display">
-                        <p>Select a state to view its cannabis regulations</p>
+
+                    <div id="selected-state-details" style="display: none; margin-top: 20px;">
+                        <div id="mirror-status" style="margin: 10px 0; padding: 10px; border-radius: 5px;">
+                            <h4>Mirror Status</h4>
+                            <div id="mirror-details"></div>
+                        </div>
+                        <div id="regulation-display">
+                            <p>Select a state tile above to view its cannabis regulations</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -560,14 +799,28 @@
             evt.currentTarget.classList.add("active");
         }
 
-        function loadStateRegulations() {
-            const state = document.getElementById('state-select').value;
+        function selectState(state) {
+            // Remove selection from all tiles
+            document.querySelectorAll('.state-tile').forEach(tile => {
+                tile.classList.remove('selected');
+            });
+            
+            // Add selection to clicked tile
+            document.querySelector(`[data-state="${state}"]`).classList.add('selected');
+            
+            // Show details panel
+            document.getElementById('selected-state-details').style.display = 'block';
+            
+            loadStateRegulations(state);
+        }
+
+        function loadStateRegulations(state) {
             const display = document.getElementById('regulation-display');
             const statusDiv = document.getElementById('mirror-status');
             const statusDetails = document.getElementById('mirror-details');
 
             if (!state) {
-                display.innerHTML = '<p>Select a state to view its cannabis regulations</p>';
+                display.innerHTML = '<p>Select a state tile above to view its cannabis regulations</p>';
                 statusDiv.style.display = 'none';
                 return;
             }
@@ -599,7 +852,7 @@
                     statusDiv.style.color = 'white';
 
                     statusDetails.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                             <span><strong>Mirror Status:</strong> ${statusText}</span>
                             <span><strong>Files:</strong> ${data.total_files || 0}</span>
                             <span><strong>Size:</strong> ${data.total_size_mb || 0} MB</span>
@@ -641,6 +894,42 @@
                     display.innerHTML = `<p>Error loading regulations: ${error.message}</p>`;
                     statusDiv.style.display = 'none';
                 });
+        }
+
+        function loadAllMirrorStatuses() {
+            const states = ['CA', 'WA', 'OR', 'AK', 'AZ', 'NV', 'CO', 'NM', 'MT', 'MO', 'IL', 'MI', 'OH', 'NY', 'MA', 'VT', 'ME', 'CT', 'RI', 'PA', 'NJ', 'DE', 'MD', 'VA', 'FL'];
+            
+            states.forEach(state => {
+                fetch(`/api/regulations/${state}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const indicator = document.getElementById(`mirror-${state}`);
+                        if (indicator) {
+                            let status = 'failed';
+                            let icon = '❌';
+                            
+                            if (data.mirror_quality) {
+                                status = 'good';
+                                icon = '✅';
+                            } else if (data.total_files > 0) {
+                                status = 'partial';
+                                icon = '⚠️';
+                            }
+                            
+                            indicator.textContent = icon;
+                            indicator.className = `mirror-indicator ${status}`;
+                            indicator.title = `${data.total_files || 0} files, ${data.total_size_mb || 0} MB`;
+                        }
+                    })
+                    .catch(error => {
+                        const indicator = document.getElementById(`mirror-${state}`);
+                        if (indicator) {
+                            indicator.textContent = '❌';
+                            indicator.className = 'mirror-indicator failed';
+                            indicator.title = 'Error loading status';
+                        }
+                    });
+            });
         }
 
         function updateDashboard() {
@@ -746,9 +1035,15 @@
 
         // Initial load
         updateDashboard();
+        
+        // Load mirror statuses for all states
+        loadAllMirrorStatuses();
 
         // Auto-refresh every 30 seconds
-        setInterval(updateDashboard, 30000);
+        setInterval(() => {
+            updateDashboard();
+            loadAllMirrorStatuses();
+        }, 30000);
     </script>
 </body>
 </html>
