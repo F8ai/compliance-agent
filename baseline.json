@@ -1,11 +1,30 @@
+
 {
   "agent": "compliance-agent",
   "description": "Baseline tests for Cannabis regulatory compliance and legal guidance",
   "questions": [
     {
       "id": "q001",
-      "question": "What are the key requirements for cannabis regulatory compliance?",
-      "expected_answer": "Key requirements include...",
+      "question": "What are the key requirements for cannabis regulatory compliance in Colorado?",
+      "expected_answer": "Key requirements include state licensing, seed-to-sale tracking, testing requirements, security measures, and local municipality approval",
+      "max_score": 10
+    },
+    {
+      "id": "q002", 
+      "question": "What testing requirements must cannabis products meet before retail sale?",
+      "expected_answer": "Products must be tested for potency, pesticides, heavy metals, residual solvents, microbials, and mycotoxins by state-licensed laboratories",
+      "max_score": 10
+    },
+    {
+      "id": "q003",
+      "question": "What security requirements are mandatory for cannabis facilities?",
+      "expected_answer": "Requirements include 24/7 video surveillance, alarm systems, limited access areas, visitor logs, and secure storage for products and cash",
+      "max_score": 10
+    },
+    {
+      "id": "q004",
+      "question": "How should cannabis products be properly labeled for retail sale?",
+      "expected_answer": "Labels must include potency information, serving sizes, warning statements, batch numbers, test results, and cannot make medical claims",
       "max_score": 10
     }
   ]

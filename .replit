@@ -19,3 +19,21 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python agent.py"
+
+[[workflows.workflow]]
+name = "Run Baseline Tests"
+author = 42906269
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python run_baseline.py"
+
+[[workflows.workflow]]
+name = "Start Dashboard"
+author = 42906269
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_server.py"
