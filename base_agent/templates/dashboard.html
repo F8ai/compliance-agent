@@ -241,6 +241,111 @@
             padding: 10px;
         }
 
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+            margin: 15px 15px 0 15px;
+            overflow: hidden;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .tab-button:hover {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .tab-button.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .state-selector {
+            margin-bottom: 20px;
+        }
+
+        .state-selector select {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            background: white;
+            color: #2c3e50;
+            width: 200px;
+        }
+
+        .state-selector select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .regulations-iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .regulation-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .regulation-link {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .regulation-link:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.1);
+        }
+
+        .regulation-link h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .regulation-link p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .regulation-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .regulation-link a:hover {
+            text-decoration: underline;
+        }
+
         /* Mobile-specific styles */
         @media (max-width: 768px) {
             body {
@@ -369,17 +474,63 @@
             </div>
         </div>
 
-        <div class="baseline-section">
-            <h3>📝 Baseline Questions</h3>
-            <div id="baseline-questions">
-                <p>Loading baseline questions...</p>
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'baseline-tab')">📊 Baseline</button>
+            <button class="tab-button" onclick="openTab(event, 'regulations-tab')">📖 Regulations</button>
+        </div>
+
+        <div id="baseline-tab" class="tab-content active">
+            <div class="baseline-section">
+                <h3>📝 Baseline Questions</h3>
+                <div id="baseline-questions">
+                    <p>Loading baseline questions...</p>
+                </div>
+            </div>
+
+            <div class="baseline-section">
+                <h3>📊 Baseline Test Results</h3>
+                <div id="baseline-results">
+                    <p>Loading baseline results...</p>
+                </div>
             </div>
         </div>
 
-        <div class="baseline-section">
-            <h3>📊 Baseline Test Results</h3>
-            <div id="baseline-results">
-                <p>Loading baseline results...</p>
+        <div id="regulations-tab" class="tab-content">
+            <div class="baseline-section">
+                <h3>📖 State Cannabis Regulations</h3>
+                <div class="state-selector">
+                    <select id="state-select" onchange="showRegulations()">
+                        <option value="">Select a state...</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="FL">Florida</option>
+                        <option value="IL">Illinois</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MD">Maryland</option>
+                        <option value="ME">Maine</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NY">New York</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="VA">Virginia</option>
+                        <option value="VT">Vermont</option>
+                        <option value="WA">Washington</option>
+                    </select>
+                </div>
+                <div id="regulations-content">
+                    <p>Select a state to view its cannabis regulations.</p>
+                </div>
             </div>
         </div>
 
@@ -389,6 +540,76 @@
     </div>
 
     <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function showRegulations() {
+            const stateSelect = document.getElementById('state-select');
+            const regulationsContent = document.getElementById('regulations-content');
+            const selectedState = stateSelect.value;
+            
+            if (!selectedState) {
+                regulationsContent.innerHTML = '<p>Select a state to view its cannabis regulations.</p>';
+                return;
+            }
+            
+            fetch(`/api/regulations/${selectedState}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        regulationsContent.innerHTML = `<p>Error loading regulations for ${selectedState}: ${data.error}</p>`;
+                        return;
+                    }
+                    
+                    let html = `<h4>📍 ${data.name} - ${data.agency}</h4>`;
+                    
+                    if (data.urls && data.urls.length > 0) {
+                        html += '<div class="regulation-links">';
+                        data.urls.forEach(url => {
+                            html += `
+                                <div class="regulation-link">
+                                    <h4>${url.title}</h4>
+                                    <p><a href="${url.url}" target="_blank">${url.url}</a></p>
+                                    <p>Last updated: ${new Date(data.last_updated).toLocaleDateString()}</p>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        
+                        // Add primary regulation iframe
+                        if (data.main_url) {
+                            html += `
+                                <div style="margin-top: 20px;">
+                                    <h4>🌐 Primary Regulation Site</h4>
+                                    <iframe src="${data.main_url}" class="regulations-iframe" 
+                                            title="${data.name} Cannabis Regulations">
+                                    </iframe>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        html += '<p>No regulation data available for this state.</p>';
+                    }
+                    
+                    regulationsContent.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error fetching regulations:', error);
+                    regulationsContent.innerHTML = `<p>Error loading regulations for ${selectedState}.</p>`;
+                });
+        }
+
         function updateDashboard() {
             // Update metrics
             fetch('/api/metrics')

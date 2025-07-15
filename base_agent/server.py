@@ -42,6 +42,11 @@ class AgentServer:
             """Get baseline questions organized by category"""
             return jsonify(self.load_baseline_questions())
         
+        @self.app.route('/api/regulations/<state>')
+        def get_regulations(state):
+            """Get regulation data for a specific state"""
+            return jsonify(self.load_state_regulations(state))
+        
         @self.app.route('/api/status')
         def get_status():
             """Get agent status"""
@@ -115,6 +120,59 @@ class AgentServer:
                 except Exception as e:
                     print(f"Error loading baseline questions from {baseline_path}: {e}")
         return {}
+    
+    def load_state_regulations(self, state: str) -> Dict[str, Any]:
+        """Load regulation data for a specific state"""
+        # Try multiple paths for regulations directory
+        paths_to_try = [
+            os.path.join('regulations', state, 'metadata.json'),
+            os.path.join('..', 'regulations', state, 'metadata.json')
+        ]
+        
+        for metadata_path in paths_to_try:
+            if os.path.exists(metadata_path):
+                try:
+                    with open(metadata_path, 'r') as f:
+                        data = json.load(f)
+                        
+                    # Get list of available regulation URLs
+                    regulation_dir = os.path.dirname(metadata_path)
+                    urls = []
+                    
+                    # Check for mirrored domains
+                    if 'mirrored_domains' in data:
+                        for domain in data['mirrored_domains']:
+                            domain_dir = os.path.join(regulation_dir, domain.replace('/', '_').replace(':', ''))
+                            if os.path.exists(domain_dir):
+                                urls.append({
+                                    'title': f"Mirrored: {domain}",
+                                    'url': f"https://{domain}",
+                                    'local_path': domain_dir
+                                })
+                    
+                    # Add main URL if available
+                    if 'main_url' in data:
+                        urls.append({
+                            'title': 'Primary Regulation Site',
+                            'url': data['main_url'],
+                            'local_path': None
+                        })
+                    
+                    return {
+                        'state': state,
+                        'name': data.get('name', state),
+                        'agency': data.get('agency', 'Unknown Agency'),
+                        'main_url': data.get('main_url'),
+                        'last_updated': data.get('last_updated'),
+                        'mirror_success': data.get('mirror_success', False),
+                        'urls': urls
+                    }
+                except Exception as e:
+                    print(f"Error loading regulations for {state}: {e}")
+        
+        return {
+            'error': f'No regulation data found for state {state}'
+        }
     
     def run(self, debug: bool = False):
         """Start the server"""
