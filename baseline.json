@@ -53,20 +53,70 @@
       "expected_answer": "Labels must include potency information, serving sizes, warning statements, batch numbers, test results, and cannot make medical claims",
       "max_score": 10,
       "tags": ["labeling", "packaging", "consumer-safety"]
+    },
+    {
+      "id": "q005",
+      "category": "licensing",
+      "difficulty": "intermediate",
+      "state": "NY",
+      "question": "What are the key differences in New York's social equity program for cannabis licensing?",
+      "expected_answer": "New York prioritizes licenses for Community Reinvestment Fund recipients, individuals with prior cannabis convictions, and minority/women-owned businesses with conditional adult-use retail dispensary licenses",
+      "max_score": 10,
+      "tags": ["new-york", "social-equity", "licensing"]
+    },
+    {
+      "id": "q006",
+      "category": "testing",
+      "difficulty": "advanced",
+      "state": "FL",
+      "question": "What are Florida's specific THC potency limits for medical cannabis products?",
+      "expected_answer": "Florida limits smokable medical cannabis to 35% THC, concentrates and extracts are capped at various levels based on product type, and edibles are limited to 10mg THC per serving",
+      "max_score": 10,
+      "tags": ["florida", "thc-limits", "medical-cannabis"]
+    },
+    {
+      "id": "q007",
+      "category": "security",
+      "difficulty": "intermediate",
+      "state": "NV",
+      "question": "What are Nevada's specific requirements for cannabis transportation security?",
+      "expected_answer": "Nevada requires GPS tracking for transport vehicles, secure storage containers, two-person teams, manifests, and direct routes between licensed facilities",
+      "max_score": 10,
+      "tags": ["nevada", "transportation", "security"]
+    },
+    {
+      "id": "q008",
+      "category": "labeling",
+      "difficulty": "beginner",
+      "state": "IL",
+      "question": "What warning statements are required on cannabis product labels in Illinois?",
+      "expected_answer": "Illinois requires warnings about impairment, keeping away from children, pregnancy risks, and that the product has not been analyzed by FDA",
+      "max_score": 10,
+      "tags": ["illinois", "warnings", "labeling"]
     }
   ],
   "question_summary": {
-    "total": 4,
+    "total": 8,
     "by_category": {
-      "licensing": 1,
-      "testing": 1,
-      "security": 1,
-      "labeling": 1
+      "licensing": 2,
+      "testing": 2,
+      "security": 2,
+      "labeling": 2
     },
     "by_difficulty": {
-      "beginner": 2,
-      "intermediate": 2,
-      "advanced": 0
+      "beginner": 3,
+      "intermediate": 4,
+      "advanced": 1
+    },
+    "by_state": {
+      "CO": 1,
+      "CA": 1,
+      "WA": 1,
+      "OR": 1,
+      "NY": 1,
+      "FL": 1,
+      "NV": 1,
+      "IL": 1
     }
   }
 }
