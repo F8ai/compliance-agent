@@ -36,8 +36,17 @@ async def run_baseline_tests():
     total_questions = len(baseline["questions"])
     print(f"📝 Running {total_questions} baseline tests...")
     
+    # Display question organization
+    if "question_summary" in baseline:
+        summary = baseline["question_summary"]
+        print(f"\n📊 Question Organization:")
+        print(f"   By Category: {summary.get('by_category', {})}")
+        print(f"   By Difficulty: {summary.get('by_difficulty', {})}")
+    
     for i, question_data in enumerate(baseline["questions"], 1):
-        print(f"\n[{i}/{total_questions}] Testing question {question_data['id']}...")
+        category = question_data.get('category', 'general')
+        difficulty = question_data.get('difficulty', 'unknown')
+        print(f"\n[{i}/{total_questions}] Testing question {question_data['id']} ({category.title()} - {difficulty.title()})...")
         
         start_time = time.time()
         

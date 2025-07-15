@@ -2,30 +2,67 @@
 {
   "agent": "compliance-agent",
   "description": "Baseline tests for Cannabis regulatory compliance and legal guidance",
+  "categories": {
+    "licensing": "State licensing and regulatory framework requirements",
+    "testing": "Product testing and quality assurance standards", 
+    "security": "Security, surveillance and facility protection requirements",
+    "labeling": "Product labeling, packaging and consumer information"
+  },
+  "difficulty_levels": {
+    "beginner": "Basic compliance concepts and requirements",
+    "intermediate": "Detailed regulatory knowledge and implementation",
+    "advanced": "Complex multi-jurisdictional and specialized compliance"
+  },
   "questions": [
     {
       "id": "q001",
+      "category": "licensing",
+      "difficulty": "beginner",
       "question": "What are the key requirements for cannabis regulatory compliance in Colorado?",
       "expected_answer": "Key requirements include state licensing, seed-to-sale tracking, testing requirements, security measures, and local municipality approval",
-      "max_score": 10
+      "max_score": 10,
+      "tags": ["colorado", "licensing", "overview"]
     },
     {
       "id": "q002", 
+      "category": "testing",
+      "difficulty": "intermediate",
       "question": "What testing requirements must cannabis products meet before retail sale?",
       "expected_answer": "Products must be tested for potency, pesticides, heavy metals, residual solvents, microbials, and mycotoxins by state-licensed laboratories",
-      "max_score": 10
+      "max_score": 10,
+      "tags": ["testing", "quality-assurance", "lab-requirements"]
     },
     {
       "id": "q003",
+      "category": "security",
+      "difficulty": "intermediate",
       "question": "What security requirements are mandatory for cannabis facilities?",
       "expected_answer": "Requirements include 24/7 video surveillance, alarm systems, limited access areas, visitor logs, and secure storage for products and cash",
-      "max_score": 10
+      "max_score": 10,
+      "tags": ["security", "surveillance", "facility-protection"]
     },
     {
       "id": "q004",
+      "category": "labeling",
+      "difficulty": "beginner",
       "question": "How should cannabis products be properly labeled for retail sale?",
       "expected_answer": "Labels must include potency information, serving sizes, warning statements, batch numbers, test results, and cannot make medical claims",
-      "max_score": 10
+      "max_score": 10,
+      "tags": ["labeling", "packaging", "consumer-safety"]
     }
-  ]
+  ],
+  "question_summary": {
+    "total": 4,
+    "by_category": {
+      "licensing": 1,
+      "testing": 1,
+      "security": 1,
+      "labeling": 1
+    },
+    "by_difficulty": {
+      "beginner": 2,
+      "intermediate": 2,
+      "advanced": 0
+    }
+  }
 }
