@@ -41,7 +41,8 @@ class RegulationMirror:
                 "main_url": "https://sbg.colorado.gov/med-enforcement",
                 "mirror_domains": [
                     "sbg.colorado.gov/med-enforcement",
-                    "leg.colorado.gov/bills/cannabis"
+                    "leg.colorado.gov/bills/cannabis",
+                    "casetext.com/regulation/colorado-administrative-code/department-1000-department-of-revenue/division-1203-marijuana-enforcement-division"
                 ]
             },
             "CA": {
@@ -49,7 +50,8 @@ class RegulationMirror:
                 "agency": "Department of Cannabis Control",
                 "main_url": "https://cannabis.ca.gov",
                 "mirror_domains": [
-                    "cannabis.ca.gov"
+                    "cannabis.ca.gov",
+                    "govt.westlaw.com/calregs/Browse/Home/California/CaliforniaCodeofRegulations?guid=I8E0B0A00BB4B11E5A7F1E54A5F5A8FD7"
                 ]
             },
             "WA": {
@@ -57,7 +59,8 @@ class RegulationMirror:
                 "agency": "Liquor and Cannabis Board", 
                 "main_url": "https://lcb.wa.gov/cannabis",
                 "mirror_domains": [
-                    "lcb.wa.gov/cannabis"
+                    "lcb.wa.gov/cannabis",
+                    "apps.leg.wa.gov/wac/default.aspx?cite=314-55"
                 ]
             },
             "OR": {
@@ -129,7 +132,8 @@ class RegulationMirror:
                 "agency": "Cannabis Control Commission",
                 "main_url": "https://mass-cannabis-control.com",
                 "mirror_domains": [
-                    "mass-cannabis-control.com"
+                    "mass-cannabis-control.com",
+                    "malegislature.gov/Laws/GeneralLaws/PartI/TitleXX/Chapter94G"
                 ]
             },
             "MI": {
@@ -185,7 +189,8 @@ class RegulationMirror:
                 "agency": "Office of Cannabis Management",
                 "main_url": "https://cannabis.ny.gov",
                 "mirror_domains": [
-                    "cannabis.ny.gov"
+                    "cannabis.ny.gov",
+                    "govt.westlaw.com/nycrr/Browse/Home/NewYork/NewYorkCodesRulesandRegulations?guid=I5f9f8e80b09011dda432a117e6e0f345"
                 ]
             },
             "RI": {
