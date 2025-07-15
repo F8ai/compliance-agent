@@ -3,6 +3,7 @@ run = "agent.py"
 
 [nix]
 channel = "stable-24_05"
+packages = ["bash", "cargo", "libiconv", "libxcrypt", "rustc"]
 
 [deployment]
 run = ["sh", "-c", "agent.py"]
