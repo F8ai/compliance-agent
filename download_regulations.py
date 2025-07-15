@@ -252,7 +252,7 @@ class RegulationMirror:
                 domain_dir = os.path.join(state_dir, domain.replace('/', '_').replace(':', ''))
                 os.makedirs(domain_dir, exist_ok=True)
                 
-                # Use wget to mirror the entire website
+                # Use wget to mirror the entire website with incremental updates
                 cmd = [
                     'wget',
                     '--mirror',                    # Enable mirroring
@@ -262,6 +262,9 @@ class RegulationMirror:
                     '--no-parent',                 # Don't go up directories
                     '--recursive',                 # Download recursively
                     '--level=3',                   # Limit recursion depth
+                    '--timestamping',              # Only download if newer than local file
+                    '--no-if-modified-since',      # Use server timestamps
+                    '--backup-converted',          # Backup files before converting links
                     '--wait=1',                    # Be polite with 1 second delay
                     '--random-wait',               # Randomize wait times
                     '--timeout=30',                # 30 second timeout
