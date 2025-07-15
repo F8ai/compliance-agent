@@ -1,0 +1,11 @@
+{
+  "state": "WA",
+  "name": "Washington",
+  "agency": "Liquor and Cannabis Board",
+  "main_url": "https://lcb.wa.gov/cannabis",
+  "mirrored_domains": [
+    "lcb.wa.gov/cannabis"
+  ],
+  "last_updated": "2025-07-15T19:32:36.481119",
+  "mirror_success": false
+}

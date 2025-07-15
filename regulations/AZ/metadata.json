@@ -1,0 +1,11 @@
+{
+  "state": "AZ",
+  "name": "Arizona",
+  "agency": "Department of Health Services",
+  "main_url": "https://azdhs.gov/licensing/medical-marijuana",
+  "mirrored_domains": [
+    "azdhs.gov/licensing/medical-marijuana"
+  ],
+  "last_updated": "2025-07-15T19:32:36.500455",
+  "mirror_success": false
+}

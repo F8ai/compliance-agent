@@ -1,0 +1,11 @@
+{
+  "state": "PA",
+  "name": "Pennsylvania (Medical Only)",
+  "agency": "Department of Health",
+  "main_url": "https://www.health.pa.gov/topics/programs/Medical%20Marijuana",
+  "mirrored_domains": [
+    "health.pa.gov/topics/programs/Medical%20Marijuana"
+  ],
+  "last_updated": "2025-07-15T19:32:36.656376",
+  "mirror_success": false
+}

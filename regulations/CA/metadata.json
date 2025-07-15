@@ -1,0 +1,11 @@
+{
+  "state": "CA",
+  "name": "California",
+  "agency": "Department of Cannabis Control",
+  "main_url": "https://cannabis.ca.gov",
+  "mirrored_domains": [
+    "cannabis.ca.gov"
+  ],
+  "last_updated": "2025-07-15T19:32:36.474549",
+  "mirror_success": false
+}

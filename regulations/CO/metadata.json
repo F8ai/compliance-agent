@@ -1,0 +1,12 @@
+{
+  "state": "CO",
+  "name": "Colorado",
+  "agency": "Marijuana Enforcement Division",
+  "main_url": "https://sbg.colorado.gov/med-enforcement",
+  "mirrored_domains": [
+    "sbg.colorado.gov/med-enforcement",
+    "leg.colorado.gov/bills/cannabis"
+  ],
+  "last_updated": "2025-07-15T19:32:36.467172",
+  "mirror_success": false
+}

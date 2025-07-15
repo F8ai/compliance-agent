@@ -1,0 +1,11 @@
+{
+  "state": "OR",
+  "name": "Oregon",
+  "agency": "Liquor and Cannabis Commission",
+  "main_url": "https://www.oregon.gov/olcc/marijuana",
+  "mirrored_domains": [
+    "oregon.gov/olcc/marijuana"
+  ],
+  "last_updated": "2025-07-15T19:32:36.487506",
+  "mirror_success": false
+}

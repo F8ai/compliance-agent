@@ -1,0 +1,11 @@
+{
+  "state": "NY",
+  "name": "New York",
+  "agency": "Office of Cannabis Management",
+  "main_url": "https://cannabis.ny.gov",
+  "mirrored_domains": [
+    "cannabis.ny.gov"
+  ],
+  "last_updated": "2025-07-15T19:32:36.597995",
+  "mirror_success": false
+}

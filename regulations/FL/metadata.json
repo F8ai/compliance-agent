@@ -1,0 +1,12 @@
+{
+  "state": "FL",
+  "name": "Florida (Medical Only)",
+  "agency": "Department of Health",
+  "main_url": "https://knowthefactsmmj.com",
+  "mirrored_domains": [
+    "knowthefactsmmj.com",
+    "flrules.org/gateway/department.asp?id=64"
+  ],
+  "last_updated": "2025-07-15T19:32:36.640707",
+  "mirror_success": false
+}
