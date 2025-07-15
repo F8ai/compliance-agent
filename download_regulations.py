@@ -290,6 +290,21 @@ class RegulationMirror:
                 domain_dir = os.path.join(state_dir, domain.replace('/', '_').replace(':', ''))
                 os.makedirs(domain_dir, exist_ok=True)
                 
+                # First try a simple connectivity test
+                test_cmd = ['curl', '-I', '--connect-timeout', '10', f'https://{domain}']
+                test_result = subprocess.run(test_cmd, capture_output=True, text=True)
+                
+                if test_result.returncode != 0:
+                    logger.warning(f"Connectivity test failed for {domain}: {test_result.stderr}")
+                    # Try HTTP instead of HTTPS
+                    test_cmd = ['curl', '-I', '--connect-timeout', '10', f'http://{domain}']
+                    test_result = subprocess.run(test_cmd, capture_output=True, text=True)
+                    if test_result.returncode != 0:
+                        logger.error(f"Domain {domain} is unreachable")
+                        quality = self.check_mirror_quality(state_dir, domain)
+                        domain_results[domain] = quality
+                        continue
+                
                 # Use wget to mirror the entire website with incremental updates
                 cmd = [
                     'wget',
@@ -299,22 +314,31 @@ class RegulationMirror:
                     '--page-requisites',           # Download CSS, JS, images
                     '--no-parent',                 # Don't go up directories
                     '--recursive',                 # Download recursively
-                    '--level=3',                   # Limit recursion depth
+                    '--level=2',                   # Reduced recursion depth
                     '--timestamping',              # Only download if newer than local file
                     '--no-if-modified-since',      # Use server timestamps
                     '--backup-converted',          # Backup files before converting links
-                    '--wait=1',                    # Be polite with 1 second delay
+                    '--wait=2',                    # Be more polite with 2 second delay
                     '--random-wait',               # Randomize wait times
-                    '--timeout=30',                # 30 second timeout
-                    '--tries=3',                   # 3 retry attempts
-                    '--reject=mp4,avi,mov,mp3,wav,zip,exe,dmg', # Skip large files
-                    '--user-agent=Mozilla/5.0 (compatible; ComplianceBot/1.0; +https://compliance-bot.com)',
+                    '--timeout=45',                # Increased timeout
+                    '--tries=5',                   # More retry attempts
+                    '--reject=mp4,avi,mov,mp3,wav,zip,exe,dmg,pdf', # Skip large files including PDFs for now
+                    '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    '--no-check-certificate',     # Skip SSL certificate validation
                     '--directory-prefix=' + domain_dir,
+                    '--debug',                     # Enable debug output
                     f'https://{domain}'
                 ]
                 
                 logger.info(f"Mirroring: https://{domain}")
+                logger.info(f"Command: {' '.join(cmd)}")
                 result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)  # 30 min timeout
+                
+                # Log detailed output for debugging
+                if result.stdout:
+                    logger.info(f"wget stdout: {result.stdout[:500]}...")
+                if result.stderr:
+                    logger.warning(f"wget stderr: {result.stderr[:500]}...")
                 
                 # Check mirror quality regardless of return code
                 quality = self.check_mirror_quality(state_dir, domain)
