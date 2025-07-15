@@ -37,6 +37,11 @@ class AgentServer:
             """Get baseline test results"""
             return jsonify(self.load_baseline_results())
         
+        @self.app.route('/api/baseline-questions')
+        def get_baseline_questions():
+            """Get baseline questions organized by category"""
+            return jsonify(self.load_baseline_questions())
+        
         @self.app.route('/api/status')
         def get_status():
             """Get agent status"""
@@ -92,6 +97,23 @@ class AgentServer:
                         return json.load(f)
                 except Exception as e:
                     print(f"Error loading baseline results from {results_path}: {e}")
+        return {}
+    
+    def load_baseline_questions(self) -> Dict[str, Any]:
+        """Load baseline questions"""
+        # Try multiple paths for baseline.json
+        paths_to_try = [
+            'baseline.json',
+            os.path.join('..', 'baseline.json')
+        ]
+        
+        for baseline_path in paths_to_try:
+            if os.path.exists(baseline_path):
+                try:
+                    with open(baseline_path, 'r') as f:
+                        return json.load(f)
+                except Exception as e:
+                    print(f"Error loading baseline questions from {baseline_path}: {e}")
         return {}
     
     def run(self, debug: bool = False):
