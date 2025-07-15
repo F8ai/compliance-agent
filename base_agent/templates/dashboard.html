@@ -263,9 +263,9 @@
             fetch('/api/metrics')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('accuracy').textContent = data.accuracy + '%';
-                    document.getElementById('confidence').textContent = data.confidence + '%';
-                    document.getElementById('response-time').textContent = data.response_time + 's';
+                    document.getElementById('accuracy').textContent = data.accuracy;
+                    document.getElementById('confidence').textContent = data.confidence;
+                    document.getElementById('response-time').textContent = data.response_time;
                     document.getElementById('tests-passed').textContent = data.tests_passed;
                     document.getElementById('status').textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
                 })
