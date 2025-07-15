@@ -9,6 +9,7 @@ import os
 import subprocess
 import json
 import logging
+import requests
 from datetime import datetime
 from typing import Dict, List
 
@@ -305,49 +306,104 @@ class RegulationMirror:
                         domain_results[domain] = quality
                         continue
                 
-                # Use wget to mirror the entire website with incremental updates
+                # Try multiple approaches for downloading
+                success = False
+                
+                # Approach 1: Use wget with better headers
                 cmd = [
                     'wget',
-                    '--mirror',                    # Enable mirroring
-                    '--convert-links',             # Convert links for offline viewing
-                    '--adjust-extension',          # Add .html extensions
-                    '--page-requisites',           # Download CSS, JS, images
-                    '--no-parent',                 # Don't go up directories
-                    '--recursive',                 # Download recursively
-                    '--level=2',                   # Reduced recursion depth
-                    '--timestamping',              # Only download if newer than local file
-                    '--no-if-modified-since',      # Use server timestamps
-                    '--backup-converted',          # Backup files before converting links
-                    '--wait=2',                    # Be more polite with 2 second delay
-                    '--random-wait',               # Randomize wait times
-                    '--timeout=45',                # Increased timeout
-                    '--tries=5',                   # More retry attempts
-                    '--reject=mp4,avi,mov,mp3,wav,zip,exe,dmg,pdf', # Skip large files including PDFs for now
-                    '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                    '--no-check-certificate',     # Skip SSL certificate validation
+                    '--mirror',
+                    '--convert-links',
+                    '--adjust-extension',
+                    '--page-requisites',
+                    '--no-parent',
+                    '--recursive',
+                    '--level=2',
+                    '--timestamping',
+                    '--wait=3',
+                    '--random-wait',
+                    '--timeout=45',
+                    '--tries=5',
+                    '--reject=mp4,avi,mov,mp3,wav,zip,exe,dmg,pdf',
+                    '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    '--no-check-certificate',
+                    '--header=Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    '--header=Accept-Language: en-US,en;q=0.5',
+                    '--header=Accept-Encoding: gzip, deflate',
+                    '--header=Connection: keep-alive',
+                    '--header=Upgrade-Insecure-Requests: 1',
                     '--directory-prefix=' + domain_dir,
-                    '--debug',                     # Enable debug output
                     f'https://{domain}'
                 ]
                 
-                logger.info(f"Mirroring: https://{domain}")
-                logger.info(f"Command: {' '.join(cmd)}")
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)  # 30 min timeout
+                logger.info(f"Attempting wget mirror for: https://{domain}")
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
                 
-                # Log detailed output for debugging
-                if result.stdout:
-                    logger.info(f"wget stdout: {result.stdout[:500]}...")
-                if result.stderr:
-                    logger.warning(f"wget stderr: {result.stderr[:500]}...")
+                if result.returncode == 0:
+                    success = True
+                    logger.info(f"wget succeeded for {domain}")
+                else:
+                    logger.warning(f"wget failed for {domain}, trying alternative approach")
+                    
+                    # Approach 2: Use curl for single page downloads
+                    try:
+                        import requests
+                        session = requests.Session()
+                        session.headers.update({
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.5',
+                            'Accept-Encoding': 'gzip, deflate',
+                            'Connection': 'keep-alive',
+                            'Upgrade-Insecure-Requests': '1'
+                        })
+                        
+                        # Download main page
+                        response = session.get(f'https://{domain}', timeout=30, verify=False)
+                        if response.status_code == 200:
+                            main_file = os.path.join(domain_dir, 'index.html')
+                            os.makedirs(os.path.dirname(main_file), exist_ok=True)
+                            with open(main_file, 'w', encoding='utf-8') as f:
+                                f.write(response.text)
+                            success = True
+                            logger.info(f"Successfully downloaded main page for {domain}")
+                        else:
+                            logger.warning(f"Failed to download main page for {domain}: {response.status_code}")
+                    except Exception as e:
+                        logger.warning(f"Python requests also failed for {domain}: {e}")
+                        
+                        # Approach 3: Use curl as fallback
+                        curl_cmd = [
+                            'curl',
+                            '-L',  # Follow redirects
+                            '-o', os.path.join(domain_dir, 'index.html'),
+                            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                            '--header', 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                            '--header', 'Accept-Language: en-US,en;q=0.5',
+                            '--connect-timeout', '30',
+                            '--max-time', '60',
+                            '--retry', '3',
+                            '--insecure',
+                            f'https://{domain}'
+                        ]
+                        
+                        curl_result = subprocess.run(curl_cmd, capture_output=True, text=True)
+                        if curl_result.returncode == 0:
+                            success = True
+                            logger.info(f"curl succeeded for {domain}")
+                        else:
+                            logger.error(f"All download methods failed for {domain}")
+                
+                cmd = []  # Reset for logging
                 
                 # Check mirror quality regardless of return code
                 quality = self.check_mirror_quality(state_dir, domain)
                 domain_results[domain] = quality
                 
-                if result.returncode == 0:
+                if success and quality['files'] > 0:
                     logger.info(f"Successfully mirrored: {domain} ({quality['files']} files, {quality['size_mb']}MB)")
                 else:
-                    logger.warning(f"Partial mirror of {domain}: {result.stderr}")
+                    logger.warning(f"Mirror failed or incomplete for {domain}: {quality['files']} files")
                     
             except subprocess.TimeoutExpired:
                 logger.warning(f"Mirror timeout for {domain} - continuing with partial download")
