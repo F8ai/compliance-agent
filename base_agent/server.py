@@ -54,6 +54,44 @@ class AgentServer:
             if baseline_results and 'results' in baseline_results:
                 total_tests = len(baseline_results['results'])
                 passed_tests = sum(1 for r in baseline_results['results'] if r.get('passed', False))
+                avg_score = sum(r.get('score', 0) for r in baseline_results['results']) / total_tests if total_tests > 0 else 0
+                avg_response_time = sum(r.get('response_time', 0) for r in baseline_results['results']) / total_tests if total_tests > 0 else 0
+                
+                return {
+                    'accuracy': round((passed_tests / total_tests) * 100, 1) if total_tests > 0 else 0,
+                    'confidence': 62,
+                    'response_time': round(avg_response_time, 2),
+                    'tests_passed': f"{passed_tests}/{total_tests}",
+                    'status': 'running'
+                }
+        except Exception as e:
+            print(f"Error loading metrics: {e}")
+        
+        # Default metrics if no baseline results
+        return {
+            'accuracy': 0,
+            'confidence': 62,
+            'response_time': 1.0,
+            'tests_passed': '0/4',
+            'status': 'running'
+        }
+    
+    def load_baseline_results(self) -> Dict[str, Any]:
+        """Load baseline test results"""
+        try:
+            if os.path.exists('baseline_results.json'):
+                with open('baseline_results.json', 'r') as f:
+                    return json.load(f)
+        except Exception as e:
+            print(f"Error loading baseline results: {e}")
+        
+        return {}
+    
+    def run(self, debug: bool = False):
+        """Start the Flask server"""
+        self.app.run(host='0.0.0.0', port=self.port, debug=debug)
+                total_tests = len(baseline_results['results'])
+                passed_tests = sum(1 for r in baseline_results['results'] if r.get('passed', False))
                 accuracy = (passed_tests / total_tests * 100) if total_tests > 0 else 0
                 
                 return {

@@ -9,7 +9,7 @@ packages = ["bash", "cargo", "libiconv", "libxcrypt", "libyaml", "rustc"]
 run = ["sh", "-c", "agent.py"]
 
 [workflows]
-runButton = "Run Agent"
+runButton = "Start Dashboard"
 
 [[workflows.workflow]]
 name = "Run Agent"
