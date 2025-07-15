@@ -1,6 +1,6 @@
 # 🧬 Compliance Agent - Cannabis Regulatory Intelligence
 
-![ACCURACY](https://img.shields.io/badge/accuracy-0%25-red) ![RESPONSE TIME](https://img.shields.io/badge/response%20time-1.0s-brightgreen) ![CONFIDENCE](https://img.shields.io/badge/confidence-62%25-yellow) ![STATUS](https://img.shields.io/badge/status-3%20issues-yellow) ![RUN IN REPLIT](https://img.shields.io/badge/run%20in-Replit-orange) ![BUILD](https://img.shields.io/badge/build-needs%20work-orange) ![TESTS](https://img.shields.io/badge/tests-2%2F4-red)
+![ACCURACY](https://img.shields.io/badge/accuracy-0%25-red) ![RESPONSE TIME](https://img.shields.io/badge/response_time-1.0s-brightgreen) ![CONFIDENCE](https://img.shields.io/badge/confidence-62%25-yellow) ![STATUS](https://img.shields.io/badge/status-3_issues-yellow) ![RUN IN REPLIT](https://img.shields.io/badge/run_in-Replit-orange) ![BUILD](https://img.shields.io/badge/build-needs_work-orange) ![TESTS](https://img.shields.io/badge/tests-2/4-red)
 
 Advanced AI agent for cannabis industry operations with real-time performance metrics and automated testing capabilities.
 
