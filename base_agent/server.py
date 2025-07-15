@@ -134,37 +134,29 @@ class AgentServer:
                     with open(metadata_path, 'r') as f:
                         data = json.load(f)
 
-                    # Get list of available regulation URLs
-                    regulation_dir = os.path.dirname(metadata_path)
-                    urls = []
-
-                    # Check for mirrored domains
-                    if 'mirrored_domains' in data:
-                        for domain in data['mirrored_domains']:
-                            domain_dir = os.path.join(regulation_dir, domain.replace('/', '_').replace(':', ''))
-                            if os.path.exists(domain_dir):
-                                urls.append({
-                                    'title': f"Mirrored: {domain}",
-                                    'url': f"https://{domain}",
-                                    'local_path': domain_dir
-                                })
-
-                    # Add main URL if available
-                    if 'main_url' in data:
-                        urls.append({
-                            'title': 'Primary Regulation Site',
-                            'url': data['main_url'],
-                            'local_path': None
-                        })
+                    # Get domains with their status
+                    domains = []
+                    if 'domain_results' in data:
+                        for domain, result in data['domain_results'].items():
+                            domains.append({
+                                'name': domain,
+                                'status': result.get('status', 'unknown'),
+                                'files': result.get('files', 0),
+                                'size_mb': result.get('size_mb', 0)
+                            })
 
                     return {
-                        'state': state,
-                        'name': data.get('name', state),
-                        'agency': data.get('agency', 'Unknown Agency'),
-                        'main_url': data.get('main_url'),
-                        'last_updated': data.get('last_updated'),
-                        'mirror_success': data.get('mirror_success', False),
-                        'urls': urls
+                        'metadata': {
+                            'state': data.get('state', state),
+                            'name': data.get('name', state),
+                            'agency': data.get('agency', 'Unknown Agency'),
+                            'main_url': data.get('main_url', ''),
+                            'last_updated': data.get('last_updated', datetime.now().isoformat())
+                        },
+                        'domains': domains,
+                        'mirror_quality': data.get('mirror_success', False),
+                        'total_files': data.get('total_files', 0),
+                        'total_size_mb': data.get('total_size_mb', 0)
                     }
                 except Exception as e:
                     print(f"Error loading regulations for {state}: {e}")
