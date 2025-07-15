@@ -3,7 +3,19 @@ run = "agent.py"
 
 [nix]
 channel = "stable-24_05"
-packages = ["bash", "cargo", "libiconv", "libxcrypt", "rustc"]
+packages = ["bash", "cargo", "libiconv", "libxcrypt", "libyaml", "rustc"]
 
 [deployment]
 run = ["sh", "-c", "agent.py"]
+
+[workflows]
+runButton = "Run Agent"
+
+[[workflows.workflow]]
+name = "Run Agent"
+author = 42906269
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python agent.py"
