@@ -15,108 +15,126 @@
   },
   "questions": [
     {
-      "id": "q001",
+      "id": "q001_co",
       "category": "licensing",
       "difficulty": "beginner",
       "state": "CO",
       "question": "What are the key requirements for cannabis regulatory compliance in Colorado?",
-      "expected_answer": "Key requirements include state licensing, seed-to-sale tracking, testing requirements, security measures, and local municipality approval",
+      "expected_answer": "Key requirements include state licensing through the Marijuana Enforcement Division, seed-to-sale tracking via METRC, testing requirements, security measures, and local municipality approval",
       "max_score": 10,
-      "tags": ["colorado", "licensing", "overview"]
+      "tags": ["colorado", "licensing", "overview", "metrc"]
     },
     {
-      "id": "q002", 
+      "id": "q001_ca",
+      "category": "licensing",
+      "difficulty": "beginner",
+      "state": "CA",
+      "question": "What are the key requirements for cannabis regulatory compliance in California?",
+      "expected_answer": "Key requirements include state licensing through the Department of Cannabis Control, track-and-trace via CCTT system, testing requirements, security measures, and local municipality approval",
+      "max_score": 10,
+      "tags": ["california", "licensing", "overview", "cctt"]
+    },
+    {
+      "id": "q001_wa",
+      "category": "licensing",
+      "difficulty": "beginner",
+      "state": "WA",
+      "question": "What are the key requirements for cannabis regulatory compliance in Washington?",
+      "expected_answer": "Key requirements include state licensing through the Liquor and Cannabis Board, seed-to-sale tracking via WSLCB traceability system, testing requirements, security measures, and local municipality approval",
+      "max_score": 10,
+      "tags": ["washington", "licensing", "overview", "wslcb"]
+    },
+    {
+      "id": "q002_ca", 
       "category": "testing",
       "difficulty": "intermediate",
       "state": "CA",
-      "question": "What testing requirements must cannabis products meet before retail sale?",
-      "expected_answer": "Products must be tested for potency, pesticides, heavy metals, residual solvents, microbials, and mycotoxins by state-licensed laboratories",
+      "question": "What testing requirements must cannabis products meet before retail sale in California?",
+      "expected_answer": "Products must be tested for potency, pesticides, heavy metals, residual solvents, microbials, mycotoxins, and foreign material by state-licensed laboratories. California requires comprehensive COA documentation.",
       "max_score": 10,
-      "tags": ["testing", "quality-assurance", "lab-requirements"]
+      "tags": ["california", "testing", "quality-assurance", "lab-requirements", "coa"]
     },
     {
-      "id": "q003",
+      "id": "q002_co",
+      "category": "testing",
+      "difficulty": "intermediate", 
+      "state": "CO",
+      "question": "What testing requirements must cannabis products meet before retail sale in Colorado?",
+      "expected_answer": "Products must be tested for potency, pesticides, heavy metals, residual solvents, microbials, and mycotoxins by state-licensed laboratories. Colorado requires batch testing and proper chain of custody.",
+      "max_score": 10,
+      "tags": ["colorado", "testing", "quality-assurance", "lab-requirements", "batch-testing"]
+    },
+    {
+      "id": "q003_wa",
       "category": "security",
       "difficulty": "intermediate",
       "state": "WA",
-      "question": "What security requirements are mandatory for cannabis facilities?",
-      "expected_answer": "Requirements include 24/7 video surveillance, alarm systems, limited access areas, visitor logs, and secure storage for products and cash",
+      "question": "What security requirements are mandatory for cannabis facilities in Washington?",
+      "expected_answer": "Requirements include 24/7 video surveillance with 45-day retention, alarm systems, limited access areas, visitor logs, secure storage for products and cash, and reporting to WSLCB",
       "max_score": 10,
-      "tags": ["security", "surveillance", "facility-protection"]
+      "tags": ["washington", "security", "surveillance", "facility-protection", "wslcb"]
     },
     {
-      "id": "q004",
+      "id": "q003_ca",
+      "category": "security",
+      "difficulty": "intermediate",
+      "state": "CA",
+      "question": "What security requirements are mandatory for cannabis facilities in California?",
+      "expected_answer": "Requirements include 24/7 video surveillance with 90-day retention, alarm systems, limited access areas, visitor logs, secure storage, background checks, and compliance with local security ordinances",
+      "max_score": 10,
+      "tags": ["california", "security", "surveillance", "facility-protection", "background-checks"]
+    },
+    {
+      "id": "q004_or",
       "category": "labeling",
       "difficulty": "beginner",
       "state": "OR",
-      "question": "How should cannabis products be properly labeled for retail sale?",
-      "expected_answer": "Labels must include potency information, serving sizes, warning statements, batch numbers, test results, and cannot make medical claims",
+      "question": "How should cannabis products be properly labeled for retail sale in Oregon?",
+      "expected_answer": "Labels must include potency information, serving sizes, warning statements, batch numbers, test results, OLCC license numbers, and cannot make medical claims or target minors",
       "max_score": 10,
-      "tags": ["labeling", "packaging", "consumer-safety"]
+      "tags": ["oregon", "labeling", "packaging", "consumer-safety", "olcc"]
     },
     {
-      "id": "q005",
-      "category": "licensing",
-      "difficulty": "intermediate",
-      "state": "NY",
-      "question": "What are the key differences in New York's social equity program for cannabis licensing?",
-      "expected_answer": "New York prioritizes licenses for Community Reinvestment Fund recipients, individuals with prior cannabis convictions, and minority/women-owned businesses with conditional adult-use retail dispensary licenses",
-      "max_score": 10,
-      "tags": ["new-york", "social-equity", "licensing"]
-    },
-    {
-      "id": "q006",
-      "category": "testing",
-      "difficulty": "advanced",
-      "state": "FL",
-      "question": "What are Florida's specific THC potency limits for medical cannabis products?",
-      "expected_answer": "Florida limits smokable medical cannabis to 35% THC, concentrates and extracts are capped at various levels based on product type, and edibles are limited to 10mg THC per serving",
-      "max_score": 10,
-      "tags": ["florida", "thc-limits", "medical-cannabis"]
-    },
-    {
-      "id": "q007",
-      "category": "security",
-      "difficulty": "intermediate",
-      "state": "NV",
-      "question": "What are Nevada's specific requirements for cannabis transportation security?",
-      "expected_answer": "Nevada requires GPS tracking for transport vehicles, secure storage containers, two-person teams, manifests, and direct routes between licensed facilities",
-      "max_score": 10,
-      "tags": ["nevada", "transportation", "security"]
-    },
-    {
-      "id": "q008",
+      "id": "q004_co",
       "category": "labeling",
       "difficulty": "beginner",
-      "state": "IL",
-      "question": "What warning statements are required on cannabis product labels in Illinois?",
-      "expected_answer": "Illinois requires warnings about impairment, keeping away from children, pregnancy risks, and that the product has not been analyzed by FDA",
+      "state": "CO",
+      "question": "How should cannabis products be properly labeled for retail sale in Colorado?",
+      "expected_answer": "Labels must include potency information, serving sizes, universal symbol, warning statements, batch numbers, test results, MED license numbers, and cannot make medical claims",
       "max_score": 10,
-      "tags": ["illinois", "warnings", "labeling"]
+      "tags": ["colorado", "labeling", "packaging", "consumer-safety", "universal-symbol"]
+    },
+    {
+      "id": "q005_multi",
+      "category": "taxation",
+      "difficulty": "advanced",
+      "state": "MULTI",
+      "question": "How do excise tax rates differ between Colorado, California, and Washington for cannabis products?",
+      "expected_answer": "Colorado has 15% excise tax, California has 15% excise tax plus cultivation taxes, Washington has 37% excise tax. Each state also allows additional local taxes.",
+      "max_score": 15,
+      "tags": ["taxation", "multi-state", "excise-tax", "colorado", "california", "washington"]
     }
   ],
   "question_summary": {
-    "total": 8,
+    "total": 11,
     "by_category": {
-      "licensing": 2,
+      "licensing": 3,
       "testing": 2,
       "security": 2,
-      "labeling": 2
+      "labeling": 2,
+      "taxation": 1
     },
     "by_difficulty": {
-      "beginner": 3,
-      "intermediate": 4,
+      "beginner": 4,
+      "intermediate": 6,
       "advanced": 1
     },
     "by_state": {
-      "CO": 1,
-      "CA": 1,
-      "WA": 1,
+      "CO": 4,
+      "CA": 3,
+      "WA": 2,
       "OR": 1,
-      "NY": 1,
-      "FL": 1,
-      "NV": 1,
-      "IL": 1
+      "MULTI": 1
     }
   }
 }

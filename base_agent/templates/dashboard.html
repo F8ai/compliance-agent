@@ -163,26 +163,12 @@
             color: #2c3e50;
         }
 
-        .question-badges {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .state-badge {
-            background: #e74c3c;
-            color: white;
-            font-size: 0.8em;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-
         .difficulty-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 0.8em;
-            padding: 2px 6px;
-            border-radius: 3px;
-            margin-right: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .difficulty-badge.beginner {
@@ -198,6 +184,21 @@
         .difficulty-badge.advanced {
             background: #fadbd8;
             color: #e74c3c;
+        }
+
+        .state-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            background: #e8f4fd;
+            color: #1e88e5;
+            margin-left: 5px;
+        }
+
+        .state-badge.multi {
+            background: #f3e5f5;
+            color: #8e24aa;
         }
 
         .question-text {
@@ -437,9 +438,9 @@
                                     <div class="question-item ${question.difficulty}">
                                         <div class="question-header">
                                             <span class="question-id">${question.id}</span>
-                                            <div class="question-badges">
-                                                ${question.state ? `<span class="state-badge">${question.state}</span>` : ''}
+                                            <div>
                                                 <span class="difficulty-badge ${question.difficulty}">${question.difficulty}</span>
+                                                ${question.state ? `<span class="state-badge ${question.state.toLowerCase() === 'multi' ? 'multi' : ''}">${question.state}</span>` : ''}
                                             </div>
                                         </div>
                                         <div class="question-text">${question.question}</div>
