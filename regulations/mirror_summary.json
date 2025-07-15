@@ -1,8 +1,8 @@
 {
-  "mirror_date": "2025-07-15T19:42:39.882373",
+  "mirror_date": "2025-07-15T19:54:51.101908",
   "total_states": 25,
-  "successful_mirrors": 0,
-  "failed_mirrors": 25,
+  "successful_mirrors": 2,
+  "failed_mirrors": 23,
   "results": {
     "CO": false,
     "CA": false,
@@ -11,7 +11,7 @@
     "AK": false,
     "AZ": false,
     "CT": false,
-    "DE": false,
+    "DE": true,
     "IL": false,
     "ME": false,
     "MD": false,
@@ -25,7 +25,7 @@
     "NY": false,
     "RI": false,
     "VT": false,
-    "VA": false,
+    "VA": true,
     "FL": false,
     "OH": false,
     "PA": false
