@@ -173,45 +173,7 @@ class AgentServer:
             'error': f'No regulation data found for state {state}'
         }
 
-    @app.route('/api/regulations/<state>')
-    def get_state_regulations(state):
-        """Get regulations for a specific state"""
-        try:
-            state_dir = os.path.join('regulations', state.upper())
-            if not os.path.exists(state_dir):
-                return jsonify({"error": f"No regulations found for state {state}"}), 404
-
-            # Read metadata
-            metadata_path = os.path.join(state_dir, 'metadata.json')
-            if os.path.exists(metadata_path):
-                with open(metadata_path, 'r') as f:
-                    metadata = json.load(f)
-            else:
-                metadata = {"state": state.upper(), "name": "Unknown"}
-
-            # List available domains with status
-            domains = []
-            for item in os.listdir(state_dir):
-                item_path = os.path.join(state_dir, item)
-                if os.path.isdir(item_path) and item != '__pycache__':
-                    domain_info = {"name": item, "status": "unknown", "files": 0}
-
-                    # Get status from metadata if available
-                    if 'domain_results' in metadata and item.replace('_', '/').replace('_', ':') in metadata['domain_results']:
-                        domain_key = item.replace('_', '/').replace('_', ':')
-                        domain_info.update(metadata['domain_results'][domain_key])
-
-                    domains.append(domain_info)
-
-            return jsonify({
-                "metadata": metadata,
-                "domains": domains,
-                "mirror_quality": metadata.get('mirror_success', False),
-                "total_files": metadata.get('total_files', 0),
-                "total_size_mb": metadata.get('total_size_mb', 0)
-            })
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+    
 
     def run(self, debug: bool = False):
         """Start the server"""
