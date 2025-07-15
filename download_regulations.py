@@ -10,8 +10,18 @@ import subprocess
 import json
 import logging
 import requests
+import time
 from datetime import datetime
 from typing import Dict, List
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    SELENIUM_AVAILABLE = True
+except ImportError:
+    SELENIUM_AVAILABLE = False
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -272,6 +282,77 @@ class RegulationMirror:
             "size_mb": round(total_size / 1024 / 1024, 2)
         }
 
+    def scrape_with_browser(self, domain: str, domain_dir: str) -> bool:
+        """Use selenium to scrape websites that block wget"""
+        if not SELENIUM_AVAILABLE:
+            return False
+            
+        try:
+            # Setup Chrome options for headless browsing
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--window-size=1920,1080')
+            chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+            
+            driver = webdriver.Chrome(options=chrome_options)
+            driver.set_page_load_timeout(60)
+            
+            # Visit main page
+            url = f"https://{domain}"
+            logger.info(f"Browser scraping: {url}")
+            driver.get(url)
+            
+            # Wait for page to load
+            time.sleep(5)
+            
+            # Save main page
+            main_file = os.path.join(domain_dir, 'index.html')
+            os.makedirs(os.path.dirname(main_file), exist_ok=True)
+            with open(main_file, 'w', encoding='utf-8') as f:
+                f.write(driver.page_source)
+            
+            # Try to find and download regulations links
+            try:
+                # Look for common regulation-related links
+                regulation_links = driver.find_elements(By.PARTIAL_LINK_TEXT, "regulation")
+                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "rule"))
+                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "law"))
+                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "cannabis"))
+                regulation_links.extend(driver.find_elements(By.PARTIAL_LINK_TEXT, "marijuana"))
+                
+                # Download up to 10 linked pages
+                for i, link in enumerate(regulation_links[:10]):
+                    try:
+                        href = link.get_attribute('href')
+                        if href and href.startswith('http'):
+                            driver.get(href)
+                            time.sleep(3)
+                            
+                            filename = f"regulation_{i+1}.html"
+                            file_path = os.path.join(domain_dir, filename)
+                            with open(file_path, 'w', encoding='utf-8') as f:
+                                f.write(driver.page_source)
+                                
+                            logger.info(f"Downloaded regulation page: {filename}")
+                    except Exception as e:
+                        logger.warning(f"Failed to download linked page {i}: {e}")
+                        continue
+                        
+            except Exception as e:
+                logger.warning(f"Failed to find regulation links: {e}")
+            
+            driver.quit()
+            return True
+            
+        except Exception as e:
+            logger.error(f"Browser scraping failed for {domain}: {e}")
+            if 'driver' in locals():
+                driver.quit()
+            return False
+
     def mirror_state_website(self, state_code: str) -> bool:
         """Mirror entire regulatory website for a specific state"""
         if state_code not in self.state_sites:
@@ -309,7 +390,16 @@ class RegulationMirror:
                 # Try multiple approaches for downloading
                 success = False
                 
-                # Approach 1: Use wget with better headers
+                # Approach 1: Use browser automation (most effective for modern sites)
+                if SELENIUM_AVAILABLE:
+                    logger.info(f"Attempting browser scraping for: {domain}")
+                    success = self.scrape_with_browser(domain, domain_dir)
+                    if success:
+                        logger.info(f"Browser scraping succeeded for {domain}")
+                    else:
+                        logger.warning(f"Browser scraping failed for {domain}, trying wget")
+                
+                # Approach 2: Use wget with better headers (fallback)
                 cmd = [
                     'wget',
                     '--mirror',
