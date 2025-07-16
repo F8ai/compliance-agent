@@ -180,14 +180,14 @@ var MSOWebPartPageFormName = 'aspnetForm';
 var g_presenceEnabled = true;
 var g_wsaEnabled = false;
 
-var g_correlationId = 'a61eb2a1-b83d-5059-a10c-8e5dff333ae4';
+var g_correlationId = '6520b2a1-f805-5059-8d61-be9db3d3b909';
 var g_wsaQoSEnabled = false;
 var g_wsaQoSDataPoints = [];
 var g_wsaRUMEnabled = false;
 var g_wsaLCID = 1033;
 var g_wsaListTemplateId = 850;
 var g_wsaSiteTemplateId = 'STS#0';
-var _fV4UI=true;var _spPageContextInfo = {webServerRelativeUrl: "\u002folcc\u002fmarijuana", webAbsoluteUrl: "https:\u002f\u002fwww.oregon.gov\u002folcc\u002fmarijuana", siteAbsoluteUrl: "https:\u002f\u002fwww.oregon.gov\u002folcc", serverRequestPath: "\u002folcc\u002fmarijuana\u002fPages\u002fdefault.aspx", layoutsUrl: "_layouts\u002f15", webTitle: "Marijuana and Hemp \u0028Cannabis\u0029", webTemplate: "1", tenantAppVersion: "0", isAppWeb: false, Has2019Era: true, webLogoUrl: "\u002folcc\u002fSiteAssets\u002fcolor logo small.png", webLanguage: 1033, currentLanguage: 1033, currentUICultureName: "en-US", currentCultureName: "en-US", clientServerTimeDelta: new Date("2025-07-15T20:18:57.1996956Z") - new Date(), updateFormDigestPageLoaded: new Date("2025-07-15T20:18:57.1996956Z"), siteClientTag: "332$$16.0.5500.1000", crossDomainPhotosEnabled:false, webUIVersion:15, webPermMasks:{High:16,Low:196673},pageListId:"{dd016c01-f3a4-4c56-96bf-301f0489b31d}",pageItemId:29, pagePersonalizationScope:1, alertsEnabled:true, customMarkupInCalculatedFieldDisabled: true, siteServerRelativeUrl: "\u002folcc", allowSilverlightPrompt:'True', isSiteAdmin: false};document.onreadystatechange=fnRemoveAllStatus; function fnRemoveAllStatus(){removeAllStatus(true)};Flighting.ExpFeatures = [480215056,1880287568,1561350208,302071836,3212816,69472768,4194310,-2113396707,268502022,-872284160,1049232,-2147421952,65536,65536,2097472,917504,-2147474174,1372324107,67108882,0,0,-2147483648,2097152,0,0,32768,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32768];var _spWebPartComponents = new Object();//]]>
+var _fV4UI=true;var _spPageContextInfo = {webServerRelativeUrl: "\u002folcc\u002fmarijuana", webAbsoluteUrl: "https:\u002f\u002fwww.oregon.gov\u002folcc\u002fmarijuana", siteAbsoluteUrl: "https:\u002f\u002fwww.oregon.gov\u002folcc", serverRequestPath: "\u002folcc\u002fmarijuana\u002fPages\u002fdefault.aspx", layoutsUrl: "_layouts\u002f15", webTitle: "Marijuana and Hemp \u0028Cannabis\u0029", webTemplate: "1", tenantAppVersion: "0", isAppWeb: false, Has2019Era: true, webLogoUrl: "\u002folcc\u002fSiteAssets\u002fcolor logo small.png", webLanguage: 1033, currentLanguage: 1033, currentUICultureName: "en-US", currentCultureName: "en-US", clientServerTimeDelta: new Date("2025-07-15T20:49:27.2138558Z") - new Date(), updateFormDigestPageLoaded: new Date("2025-07-15T20:49:27.2138558Z"), siteClientTag: "332$$16.0.5500.1000", crossDomainPhotosEnabled:false, webUIVersion:15, webPermMasks:{High:16,Low:196673},pageListId:"{dd016c01-f3a4-4c56-96bf-301f0489b31d}",pageItemId:29, pagePersonalizationScope:1, alertsEnabled:true, customMarkupInCalculatedFieldDisabled: true, siteServerRelativeUrl: "\u002folcc", allowSilverlightPrompt:'True', isSiteAdmin: false};document.onreadystatechange=fnRemoveAllStatus; function fnRemoveAllStatus(){removeAllStatus(true)};Flighting.ExpFeatures = [480215056,1880287568,1561350208,302071836,3212816,69472768,4194310,-2113396707,268502022,-872284160,1049232,-2147421952,65536,65536,2097472,917504,-2147474174,1372324107,67108882,0,0,-2147483648,2097152,0,0,32768,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32768];var _spWebPartComponents = new Object();//]]>
 </script>
 
 <script src="/_layouts/15/16.0.5456.1000/blank.js" type="text/javascript"></script>
@@ -437,9 +437,9 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 	<div class="ms-webpart-chrome ms-webpart-chrome-vertical ms-webpart-chrome-fullWidth ">
 	<div    id="WebPartWPQ1"  class="ms-WPBody "   style="" ><div id="ctl00_ctl40_g_640d23c1_2b8c_4459_80be_8f5fa6bbc438">
 		<div class="list-unstyled panel-group or-accordion-list" id="accordion-ctl00_ctl40_g_640d23c1_2b8c_4459_80be_8f5fa6bbc438_ctl01">
-			<div class="panel panel-default or-accordion-panel" id="panel-308cab2e-43a0-4c4e-9656-686a3786e1db">
+			<div class="panel panel-default or-accordion-panel" id="panel-676dfb67-737f-48bd-8fa6-112553ae3c37">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#308cab2e-43a0-4c4e-9656-686a3786e1db" aria-controls="308cab2e-43a0-4c4e-9656-686a3786e1db" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="8542a692-7f0a-48bd-8534-52f6e6f0b2e7">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#676dfb67-737f-48bd-8fa6-112553ae3c37" aria-controls="676dfb67-737f-48bd-8fa6-112553ae3c37" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="1687bf82-6dac-410e-a197-b44c3db5497d">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/CAMP-LOGO-BLUE.png" alt="CAMP Logo" />
@@ -448,7 +448,7 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="308cab2e-43a0-4c4e-9656-686a3786e1db" >
+				</h4><div class="panel-collapse collapse" id="676dfb67-737f-48bd-8fa6-112553ae3c37" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass45CD666150B44AC084A29F7B37274A4A"><span><p>
@@ -456,9 +456,9 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-7ee96c21-af9d-4fbf-af23-9e94a79d9416">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-9824fb26-8b35-4f5d-bd3a-62986d083eb8">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#7ee96c21-af9d-4fbf-af23-9e94a79d9416" aria-controls="7ee96c21-af9d-4fbf-af23-9e94a79d9416" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="36239897-9965-4013-bd3d-7ba6c9c1ca6b">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#9824fb26-8b35-4f5d-bd3a-62986d083eb8" aria-controls="9824fb26-8b35-4f5d-bd3a-62986d083eb8" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="a7357246-593d-48f9-89f0-85e366729d59">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/tax-compliance-icon.png" alt="https://www.oregon.gov/olcc/PublishingImages/tax-compliance-icon.png" />
@@ -467,16 +467,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="7ee96c21-af9d-4fbf-af23-9e94a79d9416" >
+				</h4><div class="panel-collapse collapse" id="9824fb26-8b35-4f5d-bd3a-62986d083eb8" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass51A42C813D3444C9905FBA734025ECB4"><ul><li><a href="/olcc/marijuana/Pages/MJ-Tax-Compliance.aspx">Certificate of Marijuana Tax Compliance FAQs &amp; Resources</a><br></li></ul></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-b95b143e-e0c7-41a3-99f6-ceaafc022725">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-9a324c3a-b001-4ea6-88e0-d000f313cc36">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#b95b143e-e0c7-41a3-99f6-ceaafc022725" aria-controls="b95b143e-e0c7-41a3-99f6-ceaafc022725" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="e616686b-a2f0-48f5-a6bc-c25032a6444f">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#9a324c3a-b001-4ea6-88e0-d000f313cc36" aria-controls="9a324c3a-b001-4ea6-88e0-d000f313cc36" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="4c677abd-4831-4a88-87b1-f4d141afb928">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/license.png" alt="License" />
@@ -485,16 +485,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="b95b143e-e0c7-41a3-99f6-ceaafc022725" >
+				</h4><div class="panel-collapse collapse" id="9a324c3a-b001-4ea6-88e0-d000f313cc36" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass2B7E38195DB441A5B301B0CAC365ECBD"><p><a href="/OLCC/Marijuana/Pages/Licensing.aspx">Apply For, Renew, or Change a License</a><br></p><ul><li><a href="https&#58;//camp.olcc.online/">CAMP (Cannabis &amp; Alcohol Management Program)</a> <br></li></ul><p><a href="/olcc/marijuana/Pages/forms_publications.aspx">Licensing Forms</a><br></p></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-e7cc0415-16b5-4028-a533-6edf845dfd59">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-7b48d99e-e02a-4fca-bf28-4bc6d0f24605">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#e7cc0415-16b5-4028-a533-6edf845dfd59" aria-controls="e7cc0415-16b5-4028-a533-6edf845dfd59" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="e39540c1-82e3-42c7-bd35-3ba77bd71bce">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#7b48d99e-e02a-4fca-bf28-4bc6d0f24605" aria-controls="7b48d99e-e02a-4fca-bf28-4bc6d0f24605" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="c416d0d0-00d2-4201-a349-ad3177cb250c">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/mjpermit.png" alt="Marijuana Worker Permit" />
@@ -503,16 +503,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="e7cc0415-16b5-4028-a533-6edf845dfd59" >
+				</h4><div class="panel-collapse collapse" id="7b48d99e-e02a-4fca-bf28-4bc6d0f24605" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClassCEA10CA984294F63929DD82AA2651462"><p><a href="/olcc/marijuana/Pages/Marijuana-Worker-Permits.aspx">Apply for, Renew, or Make Changes to Your Marijuana Worker Permit</a><br></p></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-2826105a-6954-4aba-99d7-e89d6dc855f6">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-697119b7-cc40-4daa-bb1f-13f5f0a5a15a">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#2826105a-6954-4aba-99d7-e89d6dc855f6" aria-controls="2826105a-6954-4aba-99d7-e89d6dc855f6" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="0a3eca9f-45c4-42b4-ac6d-b2726cb3ba2b">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#697119b7-cc40-4daa-bb1f-13f5f0a5a15a" aria-controls="697119b7-cc40-4daa-bb1f-13f5f0a5a15a" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="0f8187bb-6db8-4ef6-9aa6-afc092eb74fe">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/hemp.png" alt="Hemp" />
@@ -521,16 +521,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="2826105a-6954-4aba-99d7-e89d6dc855f6" >
+				</h4><div class="panel-collapse collapse" id="697119b7-cc40-4daa-bb1f-13f5f0a5a15a" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClassEAD62F3A09844DC59B18A53CB08F1371"><p><a href="/olcc/marijuana/Pages/Hemp.aspx">Hemp Information</a><br></p></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-c02d60c2-e734-4105-b4be-e234b9949827">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-1740be93-5cc2-4efc-9976-3fd718079915">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#c02d60c2-e734-4105-b4be-e234b9949827" aria-controls="c02d60c2-e734-4105-b4be-e234b9949827" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="d4ed8b46-be66-481f-81e1-9ef5eecd06b9">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#1740be93-5cc2-4efc-9976-3fd718079915" aria-controls="1740be93-5cc2-4efc-9976-3fd718079915" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="7d12ec71-324d-4ef0-aa33-8742fb8b031e">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/label.png" alt="Label" />
@@ -539,16 +539,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="c02d60c2-e734-4105-b4be-e234b9949827" >
+				</h4><div class="panel-collapse collapse" id="1740be93-5cc2-4efc-9976-3fd718079915" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass5602C8ED4DFD4B3C8D55753C3AF61A13"><div><p><a href="/olcc/marijuana/Pages/PackagingLabelingPreApproval.aspx">Packaging &amp; Labeling Information</a><br></p></div></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-22f31c6a-46ea-4eb4-8df8-cc63a73feafb">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-c569690b-7488-4abe-be52-2027c1311cdf">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#22f31c6a-46ea-4eb4-8df8-cc63a73feafb" aria-controls="22f31c6a-46ea-4eb4-8df8-cc63a73feafb" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="3bd5d0c6-3c4b-4b7f-9c2e-e979988a7a45">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#c569690b-7488-4abe-be52-2027c1311cdf" aria-controls="c569690b-7488-4abe-be52-2027c1311cdf" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="d4482e55-db00-49ac-a505-cf3f37711cfe">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/cts.png" alt="CTS" />
@@ -557,16 +557,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="22f31c6a-46ea-4eb4-8df8-cc63a73feafb" >
+				</h4><div class="panel-collapse collapse" id="c569690b-7488-4abe-be52-2027c1311cdf" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass59EC17DA7AD545ACB519DD31E44018AF"><ul><li><p><a href="/olcc/marijuana/Pages/OLCCCTS.aspx">OLCC CTS Information &amp; Access</a> </p></li></ul><ul><li><p><a href="/olcc/Pages/ommp_tracking.aspx">OMMP Marijuana Tracking Program</a></p></li></ul><ul><li><p><a href="https&#58;//wiki-or.metrc.com/">Oregon Metrc Wiki</a> </p></li></ul><p><br></p></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-8c8a6857-f1df-4f86-b976-e30fab83cb9d">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-b038de5d-948e-4171-a830-4fab512deb9e">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#8c8a6857-f1df-4f86-b976-e30fab83cb9d" aria-controls="8c8a6857-f1df-4f86-b976-e30fab83cb9d" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="a5ce3970-5c4d-4e32-a919-9d95c8d674b1">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#b038de5d-948e-4171-a830-4fab512deb9e" aria-controls="b038de5d-948e-4171-a830-4fab512deb9e" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="4cf04809-2016-466d-8914-1cd8f01e8a36">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/PublishingImages/product-recall.jpg" alt="Product Recall" />
@@ -575,16 +575,16 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="8c8a6857-f1df-4f86-b976-e30fab83cb9d" >
+				</h4><div class="panel-collapse collapse" id="b038de5d-948e-4171-a830-4fab512deb9e" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClass066E40DF8C7144EE9712FCA4E9218CDB"><ul><li><a href="/olcc/Pages/product-recalls.aspx">Product Recalls</a><br></li></ul></div>
 						</div>
 					</div>
 				</div>
-			</div><div class="panel panel-default or-accordion-panel" id="panel-fd54b310-e3b0-40a9-a0ec-ce7eb4b12610">
+			</div><div class="panel panel-default or-accordion-panel" id="panel-3f430fdc-ee46-41be-926c-1eeb5318a8b7">
 				<h4>
-					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#fd54b310-e3b0-40a9-a0ec-ce7eb4b12610" aria-controls="fd54b310-e3b0-40a9-a0ec-ce7eb4b12610" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="42b96d43-990d-463f-88c7-143683d5f9a2">
+					<button class="collapsed btn btn-link or-accordion-panel-btn" href="#3f430fdc-ee46-41be-926c-1eeb5318a8b7" aria-controls="3f430fdc-ee46-41be-926c-1eeb5318a8b7" data-toggle="collapse" aria-expanded="false"><div class="panel-heading" id="8e7040b6-3f2b-4190-81bf-4fe3d1d45ad3">
 						<div class="or-accordion-heading">
 							<div class="or-accordion-heading-thumb">
 								<img class="img-responsive" src="https://www.oregon.gov/olcc/lic/PublishingImages/contact.png" alt="Contact" />
@@ -593,7 +593,7 @@ if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();/
 							</div>
 						</div>
 					</div></button>
-				</h4><div class="panel-collapse collapse" id="fd54b310-e3b0-40a9-a0ec-ce7eb4b12610" >
+				</h4><div class="panel-collapse collapse" id="3f430fdc-ee46-41be-926c-1eeb5318a8b7" >
 					<div class="panel-body">
 						<div class="or-accordion-content-field">
 							<div class="ExternalClassAE9A44DBB5CC40F7857D185D865E31F7"><ul><li>Compliance&#58; <a href="mailto&#58;OLCC.Marijuana@olcc.oregon.gov">OLCC.Marijuana@olcc.oregon.gov</a>
