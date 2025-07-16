@@ -122,28 +122,79 @@
       "expected_answer": "Colorado has 15% excise tax, California has 15% excise tax plus cultivation taxes, Washington has 37% excise tax. Each state also allows additional local taxes.",
       "max_score": 15,
       "tags": ["taxation", "multi-state", "excise-tax", "colorado", "california", "washington"]
+    },
+    {
+      "id": "q009_competitive",
+      "category": "licensing",
+      "difficulty": "beginner",
+      "state": ["CA", "CO", "WA"],
+      "question": "What are the basic licensing requirements for cannabis dispensaries?",
+      "expected_answer": "Requirements include state license application, background checks, financial documentation, security plans, local approval, and compliance with zoning laws",
+      "max_score": 10,
+      "tags": ["licensing", "dispensary", "basic-requirements", "competitive-benchmark"]
+    },
+    {
+      "id": "q010_packaging_multi",
+      "category": "labeling",
+      "difficulty": "advanced",
+      "state": "MULTI",
+      "question": "What are the specific packaging requirements for edibles in California vs Colorado?",
+      "expected_answer": "California requires universal cannabis symbol, serving size markings, child-resistant packaging, and no misleading health claims. Colorado requires similar plus MED universal symbol and specific THC content warnings. Both require opaque packaging.",
+      "max_score": 15,
+      "tags": ["packaging", "edibles", "multi-state", "california", "colorado", "competitive-showcase"]
+    },
+    {
+      "id": "q011_compliance_costs",
+      "category": "licensing",
+      "difficulty": "advanced",
+      "state": "MULTI",
+      "question": "How do I calculate compliance costs for a multi-state cannabis operation?",
+      "expected_answer": "Costs include licensing fees, testing requirements, security systems, tracking software, legal compliance reviews, and ongoing regulatory updates. Varies significantly by state - CA ranges $4,000-$72,000, CO $2,000-$14,000, plus operational costs.",
+      "max_score": 15,
+      "tags": ["compliance-costs", "multi-state", "business-planning", "competitive-advantage"]
+    },
+    {
+      "id": "q012_testing_changes",
+      "category": "testing",
+      "difficulty": "intermediate",
+      "state": "NY",
+      "question": "What are the latest testing requirements changes in New York as of 2025?",
+      "expected_answer": "NY updated testing requirements to include mandatory heavy metals testing, enhanced microbial screening, and new potency verification protocols for adult-use products launched in 2024-2025",
+      "max_score": 10,
+      "tags": ["testing", "new-york", "regulatory-updates", "2025-changes"]
+    },
+    {
+      "id": "q013_security_comparison",
+      "category": "security",
+      "difficulty": "advanced",
+      "state": "MULTI",
+      "question": "Compare security requirements for cultivation facilities across West Coast states",
+      "expected_answer": "CA requires 24/7 surveillance with 90-day retention, alarm systems, limited access. WA requires motion detection, 45-day retention, visitor logs. OR requires biometric access, 30-day retention, panic buttons. All require secure storage and transport protocols.",
+      "max_score": 15,
+      "tags": ["security", "cultivation", "west-coast", "multi-state-comparison", "professional-features"]
     }
   ],
   "question_summary": {
-    "total": 11,
+    "total": 16,
     "by_category": {
-      "licensing": 3,
-      "testing": 2,
-      "security": 2,
-      "labeling": 2,
+      "licensing": 5,
+      "testing": 3,
+      "security": 3,
+      "labeling": 3,
       "taxation": 1
     },
     "by_difficulty": {
-      "beginner": 4,
-      "intermediate": 6,
-      "advanced": 1
+      "beginner": 5,
+      "intermediate": 7,
+      "advanced": 4
     },
     "by_state": {
-      "CO": 4,
-      "CA": 3,
-      "WA": 2,
-      "OR": 1,
-      "MULTI": 1
+      "CO": 6,
+      "CA": 5,
+      "WA": 4,
+      "OR": 2,
+      "NY": 2,
+      "MULTI": 5
     }
   }
 }
